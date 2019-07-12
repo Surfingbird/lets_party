@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "7838123d-7f35-4b53-bc65-ae8c82875b6b",
+		"name": "LetsPartyAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET '/events'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/events",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/events/{slug}'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/events/lol",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"events",
+						"lol"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/events/popular'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/events/popular",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"events",
+						"popular"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/events/search'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/events/search",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"events",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/events/search/{pattern}'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/events/search/pattern",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"events",
+						"search",
+						"pattern"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/profile/mypage'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/mypage",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"mypage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/profile/mypage/wishes'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/mypage/wishes",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"mypage",
+						"wishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST '/profile/mypage/wishes'",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/mypage/wishes",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"mypage",
+						"wishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEL '/profile/mypage/wishes'",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/mypage/wishes",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"mypage",
+						"wishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/profile/mypage/intentions'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/mypage/intentions",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"mypage",
+						"intentions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST '/profile/mypage/intentions'",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/mypage/intentions",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"mypage",
+						"intentions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST '/profile/mypage/intentions'",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/mypage/intentions",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"mypage",
+						"intentions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/profile/{nick_or_id}/wishes'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/{nick_or_id}/wishes",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"{nick_or_id}",
+						"wishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/profile/{nick_or_id}/intentions'",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/profile/{nick_or_id}/intentions",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"profile",
+						"{nick_or_id}",
+						"intentions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
