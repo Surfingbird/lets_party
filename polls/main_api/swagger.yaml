@@ -12,7 +12,7 @@ info:
 # host: "petstore.swagger.io"
 # basePath: "/v2"
 tags:
-- name: "enents"
+- name: "events"
   description: "Все, что связано с событиями"
   externalDocs:
     # description: "Find out more"
@@ -33,10 +33,10 @@ schemes:
 - "http"
 
 paths:
-  /enents:
+  /events:
     get:
       tags:
-      - "enents"
+      - "events"
       summary: "Получить список ближайших мероприятий"
       description: ""
       # operationId: "addPet"
@@ -59,10 +59,10 @@ paths:
       #   - "write:pets"
       #   - "read:pets"
 
-  /enents/[slug]:
+  /events/[slug]:
     get:
       tags:
-      - "enents"
+      - "events"
       summary: "Получить информацию о мероприятии"
       description: ""
       # operationId: "addPet"
@@ -85,10 +85,10 @@ paths:
       #   - "write:pets"
       #   - "read:pets"
 
-  /enents/popular:
+  /events/popular:
     get:
       tags:
-      - "enents"
+      - "events"
       summary: "Получить список популярных событий"
       description: ""
       # operationId: "addPet"
@@ -111,10 +111,10 @@ paths:
       #   - "write:pets"
       #   - "read:pets"
 
-  /enents/search:
+  /events/search:
     get:
       tags:
-      - "enents"
+      - "events"
       summary: "Установление ws соединения для интерактивного поиска"
       description: ""
       # operationId: "addPet"
@@ -138,10 +138,10 @@ paths:
       #   - "read:pets"
 
 
-  /enents/search/[pattern]:
+  /events/search/[pattern]:
     get:
       tags:
-      - "enents"
+      - "events"
       summary: "Получения событий подходящих под паттерн поиска"
       description: ""
       # operationId: "addPet"
