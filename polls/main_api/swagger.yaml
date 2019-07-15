@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Это документация к API сервиса  Lets party"
+  description: "Это документация к API сервиса [service_name]"
   version: "1.0.0"
-  title: "Lets party service"
+  title: "[service_name]"
   # termsOfService: "http://swagger.io/terms/"
   # contact:
   #   email: "apiteam@swagger.io"
@@ -12,7 +12,7 @@ info:
 # host: "petstore.swagger.io"
 # basePath: "/v2"
 tags:
-- name: "events"
+- name: "products"
   description: "Все, что связано с событиями"
   externalDocs:
     # description: "Find out more"
@@ -33,11 +33,11 @@ schemes:
 - "http"
 
 paths:
-  /events:
+  /products:
     get:
       tags:
-      - "events"
-      summary: "Получить список ближайших мероприятий"
+      - "products"
+      summary: "Получить список новых товаров"
       description: ""
       # operationId: "addPet"
       consumes:
@@ -45,124 +45,83 @@ paths:
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
 
-  /events/[slug]:
+  /products/[slug]:
     get:
       tags:
-      - "events"
-      summary: "Получить информацию о мероприятии"
+      - "products"
+      summary: "Получить информацию о товаре"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
 
-  /events/popular:
+  /products/popular:
     get:
       tags:
-      - "events"
-      summary: "Получить список популярных событий"
+      - "products"
+      summary: "Получить список популярных товаров"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
 
-  /events/search:
+  /products/search:
     get:
       tags:
-      - "events"
+      - "products"
       summary: "Установление ws соединения для интерактивного поиска"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
 
-
-  /events/search/[pattern]:
+  /products/search/[pattern]:
     get:
       tags:
-      - "events"
-      summary: "Получения событий подходящих под паттерн поиска"
+      - "products"
+      summary: "Получения товаров подходящих под паттерн поиска"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
 
   /profile/mypage:
     get:
@@ -170,7 +129,6 @@ paths:
       - "profile"
       summary: ""
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
@@ -220,7 +178,7 @@ paths:
     post:
       tags:
       - "profile"
-      summary: "Добавить событие в список желаний"
+      summary: "Добавить товар в список желаний"
       description: ""
       # operationId: "addPet"
       consumes:
@@ -245,7 +203,7 @@ paths:
     delete:
       tags:
       - "profile"
-      summary: "Убрать событие из списка желаний"
+      summary: "Убрать товар из списка желаний"
       description: ""
       # operationId: "addPet"
       consumes:
@@ -296,7 +254,7 @@ paths:
     post:
       tags:
       - "profile"
-      summary: "Добавить намерение подарить подарок"
+      summary: "Добавить намерение подарить товар"
       description: ""
       # operationId: "addPet"
       consumes:
@@ -321,7 +279,7 @@ paths:
     delete:
       tags:
       - "profile"
-      summary: "Отказаться дарить подарок"
+      summary: "Отказаться дарить товар"
       description: ""
       # operationId: "addPet"
       consumes: 
@@ -347,7 +305,7 @@ paths:
     get:
       tags:
       - "profile"
-      summary: "Список поделаний пользователя"
+      summary: "Список поджеланий пользователя"
       description: ""
       # operationId: "addPet"
       consumes:
@@ -410,45 +368,32 @@ securityDefinitions:
     in: "header"
 
 definitions:
-  Event:
+  Product:
     type: "object"
     properties:
       id:
-        type: "integer"
-        format: "int64"
-
-      quantity:
-        type: "integer"
-        format: "int32"
-
-      shipDate:
         type: "string"
-        format: "date-time"
 
-      status:
+      product_name:
         type: "string"
-        description: "Order Status"
-        enum:
-        - "placed"
-        - "approved"
-        - "delivered"
+
+      discription:
+        type: "string"
+
+      price:
+        type: "float"
+        format: "float32"
         
-      complete:
-        type: "boolean"
-        default: false
-    xml:
-      name: "Order"
-
-  Instance:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
+      img_url:
         type: "string"
-    xml:
-      name: "Category"
+        format: "URL"
+
+      product_url:
+        type: "string"
+        format: "URL"
+
+    # xml:
+    #   name: "Order"
 
   User:
     type: "object"
