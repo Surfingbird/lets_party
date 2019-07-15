@@ -13,3 +13,4 @@ db_name = '12345'
 
 conn = connect_db(host, port, db_name)
 product_collection = conn['products']
+profiles_collection = conn['profiles']

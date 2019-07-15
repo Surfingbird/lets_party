@@ -3,7 +3,10 @@ import  aiohttp
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 import re
-import product
+
+from polls.models import product
+
+prod_manager = product.ProductManager()
 
 class WrappedUrlQueue:
     def __init__(self, max_rps):
@@ -92,7 +95,7 @@ class Crawler:
     
     # TODO сделать бесконечным циклом
     async def do_work(self, idx):
-        for i in range(100):
+        for i in range(10):
             url = await self.q.get()
             if url not in self.visited_urls:
                 self.visited_urls.add(url)
@@ -107,11 +110,9 @@ class Crawler:
                 prod = self.get_product(soup, url)
                 if prod is not None:
                     print(prod)
+                    await prod_manager.create_product(prod)
 
     async def crawl(self):
         await self.start_session()
-
-        await self.do_work(1)
+        await asyncio.gather(*(self.do_work(i) for i in range(self.workers_count)))
         await self.close_session()
-
-        # await asyncio.gather(self.do_work(i) for i in range(self.workers_count)) 

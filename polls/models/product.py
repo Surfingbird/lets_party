@@ -1,26 +1,26 @@
-import trafaret as t
-import db
-
-product_t = t.Dict({
-    t.Key('_id'): t.Int(),
-    t.Key('product_name'): t.String(),
-    t.Key('discription'): t.String(),
-    t.Key('price'): t.Float(),
-    t.Key('img_url'): t.String(),
-    t.Key('product_url'): t.String()
-})
-product_t.make_optional('_id')
+from polls.models import db
+from polls.models import api
 
 def create_product_dict(product_name, discription, price, img_url, product_url):
-    document = {
-        'product_name': product_name,
-        'discription': discription,
-        'price': price,
-        'img_url': img_url,
-        'product_url': product_url
-    }
+    document = {}
+
+    if discription: 
+        document = {
+            'product_name': product_name,
+            'discription': discription,
+            'price': price,
+            'img_url': img_url,
+            'product_url': product_url
+        }
+    else :
+        document = {
+            'product_name': product_name,
+            'price': price,
+            'img_url': img_url,
+            'product_url': product_url
+        }
     
-    if product_t.check(document):
+    if api.product_t.check(document):
         return document
 
 class Product:

@@ -23,8 +23,12 @@ class FakeModelManager:
 
         await db.conn.test_collection.insert_many(products)
 
-            
-m = FakeModelManager()
+    async def _create_fake_profiles(self, count):
+        profiles = []
+        for i in range(count):
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(m._create_fake_products(10))
+            
+# m = FakeModelManager()
+
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(m._create_fake_products(10))
