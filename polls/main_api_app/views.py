@@ -1,22 +1,30 @@
 from aiohttp import web
+from polls.models import product
+
+p_manager = product.ProductManager()
 
 async def index(request):
     return web.Response(text='index!')
 
-async def near_events(request):
-    return web.Response(text='near_events!')
+async def new_products(request):
+    return web.Response(text='new_products!')
 
-async def event(request):
-    return web.Response(text='event!')
+async def product(request):
+    _id = request.match_info['id']
 
-async def popular_events(request):
-    return web.Response(text='popular_events!')
+    product = await p_manager.get_product(_id)
+    print(product)
 
-async def search_events(request):
-    return web.Response(text='search_events!')
+    return web.Response(text='product!')
 
-async def get_events(request):
-    return web.Response(text='get_events with pattern!')
+async def popular_products(request):
+    return web.Response(text='popular_products!')
+
+async def search_products(request):
+    return web.Response(text='search_products!')
+
+async def get_products(request):
+    return web.Response(text='get_products with pattern!')
 
 
 async def mypage(request):

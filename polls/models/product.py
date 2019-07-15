@@ -1,5 +1,6 @@
 from polls.models import db
 from polls.models import api
+from bson.objectid import ObjectId
 
 def create_product_dict(product_name, discription, price, img_url, product_url):
     document = {}
@@ -47,3 +48,6 @@ class ProductManager:
 
     async def del_product(self, _id):
         pass
+
+    async def get_product(self, _id):
+        return await db.product_collection.find_one({'_id' : ObjectId(_id)})
