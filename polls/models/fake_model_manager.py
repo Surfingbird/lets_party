@@ -22,7 +22,12 @@ class FakeModelManager:
              random.uniform(self.min_price, self.max_price), fake.url())
             products.append(product)
 
-        await db.product_collection.insert_many(products)
+        res = await db.product_collection.insert_many(products)
+        if res is None:
+            return False
+
+        return True
+
 
     async def _create_fake_profiles(self, count):
         profiles = []
@@ -53,4 +58,8 @@ class FakeModelManager:
             }
             profiles.append(profile)
 
-        await db.profiles_collection.insert_many(profiles)
+        res = await db.profiles_collection.insert_many(profiles)
+        if res is None:
+            return False
+
+        return True
