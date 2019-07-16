@@ -12,16 +12,15 @@ product_t.make_optional('_id')
 product_t.make_optional('discription')
 
 wish_t = t.Dict({
-    t.Key('product_id'): t.String(),
-    t.Key('sponsor_id'): t.Int(),
+    t.Key('p_id'): t.String(),
+    t.Key('sponsor_id'): t.String(),
     t.Key('reserved'): t.Bool()
 })
 wish_t.make_optional('sponsor_id')
 
 intention_t = t.Dict({
-    t.Key('product_id'): t.String(),
-    t.Key('inst_id'): t.Int(),
-    t.Key('recipient_id'): t.Int(),
+    t.Key('p_id'): t.String(),
+    t.Key('dest_id'): t.String(),
 })
 
 profile_t = t.Dict({
