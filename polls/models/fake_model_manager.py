@@ -1,11 +1,13 @@
-import api
+import polls.models.api as api
+import polls.models.model_manager as model_manager
 import random
 import asyncio
-from polls.models import db
 
+from polls.models import db
 from faker import Faker
 
 fake = Faker()
+mm = model_manager.ModelManager()
 
 class FakeModelManager:
     def __init__(self):
@@ -15,18 +17,46 @@ class FakeModelManager:
         self.max_price = 100000
         self.max_id = 99999999
 
+
     async def _create_fake_products(self, count):
         products = []
         for i in range(count):
-            product = api.create_product(fake.name(), fake.text(), \
-             random.uniform(self.min_price, self.max_price), fake.url())
-            products.append(product)
+            product = model_manager.Product(fake.name(), fake.text(), random.uniform(self.min_price, self.max_price), fake.url(), fake.url())
+            products.append(product.to_dict())
 
         res = await db.product_collection.insert_many(products)
         if res is None:
             return False
 
         return True
+
+
+    async def _create_fake_profile(self):
+        uid = random.randint(1, self.max_id)
+        first_name = fake.name()
+        last_name = fake.name()
+        photo_url = fake.url()
+        wishes = []
+        intentions = []
+
+        profile = {
+            'uid' : uid,
+            'first_name' : first_name,
+            'last_name' : last_name,
+            'photo_url' : photo_url,
+            'wishes' : wishes,
+            'intentions' : intentions
+            }
+
+        res = await db.profiles_collection.insert_one(profile)
+        return res
+
+
+    async def _create_fake_product(self):
+        product = model_manager.Product(fake.name(), fake.text(), random.uniform(self.min_price, self.max_price), fake.url(), fake.url())
+
+        res = await db.product_collection.insert_one(product.to_dict())
+        return res
 
 
     async def _create_fake_profiles(self, count):

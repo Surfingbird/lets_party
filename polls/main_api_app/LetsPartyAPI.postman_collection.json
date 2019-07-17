@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "GET '/events'",
+			"name": "GET '/products'",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -15,7 +15,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/events",
+					"raw": "http://0.0.0.0:8080/products",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -25,14 +25,14 @@
 					],
 					"port": "8080",
 					"path": [
-						"events"
+						"products"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET '/events/{slug}'",
+			"name": "GET '/products/{slug}'",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -41,7 +41,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/events/lol",
+					"raw": "http://0.0.0.0:8080/products/lol",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -51,7 +51,7 @@
 					],
 					"port": "8080",
 					"path": [
-						"events",
+						"products",
 						"lol"
 					]
 				}
@@ -59,7 +59,7 @@
 			"response": []
 		},
 		{
-			"name": "GET '/events/popular'",
+			"name": "GET '/products/popular'",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -68,7 +68,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/events/popular",
+					"raw": "http://0.0.0.0:8080/products/popular",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -78,7 +78,7 @@
 					],
 					"port": "8080",
 					"path": [
-						"events",
+						"products",
 						"popular"
 					]
 				}
@@ -86,7 +86,7 @@
 			"response": []
 		},
 		{
-			"name": "GET '/events/search'",
+			"name": "GET '/products/search'",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -95,7 +95,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/events/search",
+					"raw": "http://0.0.0.0:8080/products/search",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -105,7 +105,7 @@
 					],
 					"port": "8080",
 					"path": [
-						"events",
+						"products",
 						"search"
 					]
 				}
@@ -113,7 +113,7 @@
 			"response": []
 		},
 		{
-			"name": "GET '/events/search/{pattern}'",
+			"name": "GET '/products/search/{pattern}'",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -122,7 +122,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/events/search/pattern",
+					"raw": "http://0.0.0.0:8080/products/search/pattern",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -132,7 +132,7 @@
 					],
 					"port": "8080",
 					"path": [
-						"events",
+						"products",
 						"search",
 						"pattern"
 					]

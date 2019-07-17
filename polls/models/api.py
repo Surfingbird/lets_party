@@ -1,7 +1,8 @@
 import trafaret as t
+from bson.objectid import ObjectId
 
 product_t = t.Dict({
-    t.Key('_id'): t.Int(),
+    t.Key('_id'): ObjectId,
     t.Key('product_name'): t.String(),
     t.Key('discription'): t.String(),
     t.Key('price'): t.Float(),
@@ -23,7 +24,9 @@ intention_t = t.Dict({
     t.Key('dest_id'): t.String(),
 })
 
+# TODO проверить, можно ли так делать
 profile_t = t.Dict({
+    t.Key('_id'): ObjectId,
     t.Key('uid'): t.Int(),
     t.Key('first_name'): t.String(),
     t.Key('last_name'): t.String(),
@@ -31,3 +34,4 @@ profile_t = t.Dict({
     t.Key('wishes'): t.List(wish_t),
     t.Key('intentions'): t.List(intention_t)
 })
+profile_t.make_optional('_id')

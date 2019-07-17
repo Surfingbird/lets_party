@@ -87,7 +87,6 @@ def test_del_users_wish_simple():
     loop.run_until_complete(inner_del_users_wish_simple())
 
 
-#TODO тут баг
 def test_add_users_intention_full():
     loop = asyncio.get_event_loop()
 
@@ -158,6 +157,7 @@ def test_del_users_intention_full():
     loop.run_until_complete(inner_del_users_intention_full())
 
 
+# TODO тут баг
 def test_del_users_wish_full():
     loop = asyncio.get_event_loop()
 
