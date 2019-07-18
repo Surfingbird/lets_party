@@ -21,18 +21,45 @@ tags:
 - name: "profile"
   description: "Все, что связано с профилями"
 
-# - name: "user"
-#   description: "Operations about user"
-
-#   externalDocs:
-#     description: "Find out more about our store"
-#     url: "http://swagger.io"
+- name: "auth"
+  description: "Все, что связано с авторизацией"
 
 schemes:
 # - "https"
 - "http"
 
 paths:
+  /auth:
+    get:
+      tags:
+      - "auth"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "id"
+          description: ""
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Успешно авторизовались"
+
+    delete:
+      tags:
+      - "auth"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      responses:
+        200:
+          description: "Успешно разлогинились"
+
+
+
   /products:
     get:
       tags:
@@ -219,8 +246,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Intention"
-
+              $ref: "#/definitions/ExtendedIntention"
 
     post:
       tags:
@@ -307,7 +333,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Intention"
+              $ref: "#/definitions/ExtendedIntention"
 
 definitions:
   Product:
@@ -393,6 +419,36 @@ definitions:
         type: "bool"
 
       sponsor_id:
+        type: "string"
+
+      _id:
+        type: "string"
+
+      product_name:
+        type: "string"
+
+      discription:
+        type: "string"
+
+      price:
+        type: "float"
+        format: "float32"
+        
+      img_url:
+        type: "string"
+        format: "URL"
+
+      product_url:
+        type: "string"
+        format: "URL"
+
+  ExtendedIntention:
+    type: "object"
+    properties:
+      p_id:
+        type: "string"
+
+      dest_id:
         type: "string"
 
       _id:
