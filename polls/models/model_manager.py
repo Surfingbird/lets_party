@@ -133,7 +133,7 @@ class ModelManager:
 
         return True
 
-
+# TODO проверить, корректно и работает
     async def del_users_wish(self, uid, pid):
         res = await self.check_user(uid)
         if res is None:
@@ -143,14 +143,23 @@ class ModelManager:
         if res is None:
             return False
 
+        # TODO развернуть кластер mongodb
+        # async with await db.client.start_session() as s:
+        #     async with s.start_transaction():
+        s = None
+
         selector, update = del_users_wish_query(uid, pid)
-        res = await db.profiles_collection.update_one(selector, update)
+        res = await db.profiles_collection.update_one(selector, update, session=s)
         if res is None:
+            # await s.abort_transaction()
+
             return False
 
         selector, update = del_users_intention_query_wo_sponsor(uid, pid)
-        res = await db.profiles_collection.update_one(selector, update)
+        res = await db.profiles_collection.update_one(selector, update, session=s)
         if res is None:
+            # await s.abort_transaction()
+
             return False
 
         return True
@@ -188,14 +197,23 @@ class ModelManager:
         if res is None:
             return False
 
+        # TODO развернуть кластер mongodb
+        # async with await db.client.start_session() as s:
+        #     async with s.start_transaction():
+        s = None
+
         selector, update = add_users_intention_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(selector, update)
+        res = await db.profiles_collection.update_one(selector, update, session=s)
         if res is None:
+            # await s.abort_transaction()
+
             return False
 
         selector, update = reserve_users_wish_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(selector, update)
+        res = await db.profiles_collection.update_one(selector, update, session=s)
         if res is None:
+            # await s.abort_transaction()
+
             return False
 
         return True
@@ -218,14 +236,23 @@ class ModelManager:
         if res is None:
             return False
 
+        # TODO развернуть кластер mongodb
+        # async with await db.client.start_session() as s:
+        #     async with s.start_transaction():
+        s = None
+
         condition, update = close_res_users_wish_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(condition, update)
+        res = await db.profiles_collection.update_one(condition, update, session=s)
         if res is None:
+            # await s.abort_transaction()
+
             return False
 
         condition, update = del_users_intention_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(condition, update)
+        res = await db.profiles_collection.update_one(condition, update, session=s)
         if res is None:
+            # await s.abort_transaction()
+
             return False
 
         return True
