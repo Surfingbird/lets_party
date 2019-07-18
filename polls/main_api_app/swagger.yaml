@@ -39,7 +39,6 @@ paths:
       - "products"
       summary: "Получить список новых товаров"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
@@ -123,6 +122,7 @@ paths:
             items:
               $ref: "#/definitions/Product"
 
+
   /profile/mypage:
     get:
       tags:
@@ -134,19 +134,12 @@ paths:
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            item:
+              $ref: "#/definitions/Profile"
 
 
   /profile/mypage/wishes:
@@ -155,75 +148,58 @@ paths:
       - "profile"
       summary: "Список моих пожеланий"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ExtendedWish"
 
     post:
       tags:
       - "profile"
       summary: "Добавить товар в список желаний"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
+      - name: "p_id"
+        description: ""
+        required: true
+        type: "string"
+
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        201:
+          description: ""
 
     delete:
       tags:
       - "profile"
       summary: "Убрать товар из списка желаний"
       description: ""
-      # operationId: "addPet"
+
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
+      - name: "p_id"
+        description: ""
+        required: true
+        type: "string"
+
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+
 
   /profile/mypage/intentions:
     get:
@@ -231,101 +207,88 @@ paths:
       - "profile"
       summary: "Список того, что я хочу подарить"
       description: ""
-      # operationId: "addPet"
+
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Intention"
+
 
     post:
       tags:
       - "profile"
       summary: "Добавить намерение подарить товар"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
+      - name: "p_id"
+        description: ""
+        required: true
+        type: "string"
+
+      - name: "dest_id"
+        description: ""
+        required: true
+        type: "string"
+
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        201:
+          description: ""
 
     delete:
       tags:
       - "profile"
       summary: "Отказаться дарить товар"
       description: ""
-      # operationId: "addPet"
       consumes: 
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
+      - name: "p_id"
+        description: ""
+        required: true
+        type: "string"
+
+      - name: "dest_id"
+        description: ""
+        required: true
+        type: "string"
+
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+
 
   /profile/[id_or_name]/wishes:
     get:
       tags:
       - "profile"
-      summary: "Список поджеланий пользователя"
+      summary: "Список пожеланий пользователя"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ExtendedWish"
 
   /profile/[id_or_name]/intentions:
     get:
@@ -333,45 +296,24 @@ paths:
       - "profile"
       summary: "Список того, что мы хотим подарить пользователю"
       description: ""
-      # operationId: "addPet"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      # - in: "body"
-      #   name: "body"
-      #   description: "Pet object that needs to be added to the store"
-      #   required: true
-      #   schema:
-      #     $ref: "#/definitions/Pet"
       responses:
-      #   405:
-      #     description: "Invalid input"
-      # security:
-      # - petstore_auth:
-      #   - "write:pets"
-      #   - "read:pets"
- 
-
-securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Intention"
 
 definitions:
   Product:
     type: "object"
     properties:
-      id:
+      _id:
         type: "string"
 
       product_name:
@@ -392,16 +334,84 @@ definitions:
         type: "string"
         format: "URL"
 
-    # xml:
-    #   name: "Order"
-
-  User:
+  Profile:
     type: "object"
     properties:
-      id:
+      _id:
+        type: "string"
+
+      uid:
         type: "integer"
         format: "int64"
-      name:
+
+      first_name:
         type: "string"
-    xml:
-      name: "Category"
+
+      last_name:
+        type: "string"
+
+      photo_url:
+        type: "string"
+        format: "URL"
+
+      wishes:
+        type: "array"
+        format: User
+
+      intentions:
+        type: "array"
+        format: User
+
+  Wish:
+    type: "object"
+    properties:
+      p_id:
+        type: "string"
+
+      reserved:
+        type: "bool"
+
+      sponsor_id:
+        type: "string"
+
+  Intention:
+    type: "object"
+    properties:
+      p_id:
+        type: "string"
+
+      dest_id:
+        type: "string"
+
+  ExtendedWish:
+    type: "object"
+    properties:
+      p_id:
+        type: "string"
+
+      reserved:
+        type: "bool"
+
+      sponsor_id:
+        type: "string"
+
+      _id:
+        type: "string"
+
+      product_name:
+        type: "string"
+
+      discription:
+        type: "string"
+
+      price:
+        type: "float"
+        format: "float32"
+        
+      img_url:
+        type: "string"
+        format: "URL"
+
+      product_url:
+        type: "string"
+        format: "URL"

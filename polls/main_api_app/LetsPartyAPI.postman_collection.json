@@ -41,7 +41,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/products/lol",
+					"raw": "http://0.0.0.0:8080/products/5d2c7cf436e8a861bb87a941",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -52,7 +52,7 @@
 					"port": "8080",
 					"path": [
 						"products",
-						"lol"
+						"5d2c7cf436e8a861bb87a941"
 					]
 				}
 			},
@@ -199,10 +199,17 @@
 			"name": "POST '/profile/mypage/wishes'",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\t\"p_id\" : \"5d2c7db535aa0caad140b95e\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/wishes",
@@ -227,10 +234,17 @@
 			"name": "DEL '/profile/mypage/wishes'",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\t\"p_id\" : \"5d2c7cf436e8a861bb87a941\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/wishes",
@@ -283,10 +297,17 @@
 			"name": "POST '/profile/mypage/intentions'",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\t\"p_id\" : \"5d2c7db335aa0caad140b958\",\n\t\"dest_id\" : \"5d2cca26e6f19f24a6a9fd2a\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/intentions",
@@ -311,10 +332,17 @@
 			"name": "POST '/profile/mypage/intentions'",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\t\"p_id\" : \"5d2c7db335aa0caad140b958\",\n\t\"dest_id\" : \"5d2cca26e6f19f24a6a9fd2a\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/intentions",
@@ -386,6 +414,68 @@
 						"profile",
 						"{nick_or_id}",
 						"intentions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET '/auth'",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\" : \"5d2cca26e6f19f24a6a9fd2a\"\n}"
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/auth",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEL 'auth'",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8080/auth",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8080",
+					"path": [
+						"auth"
 					]
 				}
 			},
