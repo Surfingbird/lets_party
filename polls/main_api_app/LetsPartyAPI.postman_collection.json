@@ -364,7 +364,7 @@
 			"response": []
 		},
 		{
-			"name": "GET '/profile/{nick_or_id}/wishes'",
+			"name": "GET '/profile/{dest_id}/wishes'",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -373,7 +373,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/profile/{nick_or_id}/wishes",
+					"raw": "http://0.0.0.0:8080/profile/5d2cca26e6f19f24a6a9fd2a/wishes",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -384,7 +384,7 @@
 					"port": "8080",
 					"path": [
 						"profile",
-						"{nick_or_id}",
+						"5d2cca26e6f19f24a6a9fd2a",
 						"wishes"
 					]
 				}
@@ -392,16 +392,26 @@
 			"response": []
 		},
 		{
-			"name": "GET '/profile/{nick_or_id}/intentions'",
+			"name": "GET '/profile/{dest_id}/intentions'",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\t\n}\n"
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/profile/{nick_or_id}/intentions",
+					"raw": "http://0.0.0.0:8080/profile/5d2cca26e6f19f24a6a9fd2a/intentions",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -412,7 +422,7 @@
 					"port": "8080",
 					"path": [
 						"profile",
-						"{nick_or_id}",
+						"5d2cca26e6f19f24a6a9fd2a",
 						"intentions"
 					]
 				}
@@ -436,7 +446,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\" : \"5d2cca26e6f19f24a6a9fd2a\"\n}"
+					"raw": "{\n\t\"id\" : \"5d2cca26e6f19f24a6a9fd31\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/auth",

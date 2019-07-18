@@ -297,7 +297,7 @@ paths:
           description: ""
 
 
-  /profile/[id_or_name]/wishes:
+  /profile/[dest_id]/wishes:
     get:
       tags:
       - "profile"
@@ -316,7 +316,7 @@ paths:
             items:
               $ref: "#/definitions/ExtendedWish"
 
-  /profile/[id_or_name]/intentions:
+  /profile/[dest_id]/intentions:
     get:
       tags:
       - "profile"

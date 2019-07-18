@@ -22,7 +22,7 @@ def setup_routes(app):
     app.router.add_post('/profile/mypage/intentions', views.add_my_intentions)
     app.router.add_delete('/profile/mypage/intentions', views.del_my_intentions)
 
-    app.router.add_get('/profile/{nick_or_id}/wishes', views.users_wishes)
-    app.router.add_get('/profile/{nick_or_id}/intentions', views.intentions_for_user)
+    app.router.add_get('/profile/{dest_id}/wishes', views.users_wishes)
+    app.router.add_get('/profile/{dest_id}/intentions', views.intentions_for_user)
 
 

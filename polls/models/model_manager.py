@@ -178,10 +178,53 @@ class ModelManager:
                 extended =  {**wish, **product}
                 extended['p_id'] = str_id
                 extended['_id'] = str_id
+                extended['sponsor_id'] = uid
 
                 extended_wishes.append(extended)
 
         return extended_wishes
+
+    async def get_users_intentions(self, uid):
+        res = await self.get_profile(uid)
+        if res is None:
+            return None
+
+        extended_intentions = []
+
+        for intention in res['intentions']:
+            str_id = str(intention['p_id'])
+            product = await self.get_product(str_id)
+            if product is not None:
+                extended =  {**intention, **product}
+                extended['p_id'] = str_id
+                extended['_id'] = str_id
+
+                extended_intentions.append(extended)
+
+        return extended_intentions
+
+    async def intentions_for_user(self, uid, dest_id):
+        res = await self.get_profile(uid)
+        if res is None:
+            return None
+
+        extended_intentions = []
+
+        for intention in res['intentions']:
+            str_dest_id = str(intention['dest_id'])
+            if str_dest_id == dest_id:
+                str_p_id = str(intention['p_id'])
+
+                product = await self.get_product(str_p_id)
+                if product is not None:
+                    extended =  {**intention, **product}
+                    extended['p_id'] = str_p_id
+                    extended['_id'] = str_p_id
+                    extended['dest_id'] = str_dest_id
+
+                    extended_intentions.append(extended)
+
+        return extended_intentions
 
 
     async def add_users_intention(self, uid, pid, dest_id):
