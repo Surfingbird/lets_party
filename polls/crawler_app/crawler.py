@@ -4,9 +4,10 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 import re
 
-from polls.models import product
+# from polls.models import product
+import polls.models.model_manager as model_manager
 
-prod_manager = product.ProductManager()
+mm = model_manager.ModelManager()
 
 class WrappedUrlQueue:
     def __init__(self, max_rps):
@@ -80,7 +81,7 @@ class Crawler:
         if item is not None:
             discription = item.get_text()
             
-        return product.Product(product_name, discription, price, img_url, product_url)
+        return model_manager.Product(product_name, discription, price, img_url, product_url)
 
     def get_urls(self, soup):
         urls = set()
@@ -110,7 +111,7 @@ class Crawler:
                 prod = self.get_product(soup, url)
                 if prod is not None:
                     print(prod)
-                    await prod_manager.create_product(prod)
+                    await mm.create_product(prod)
 
     async def crawl(self):
         await self.start_session()
