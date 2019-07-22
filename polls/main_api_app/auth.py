@@ -30,6 +30,7 @@ async def check_token_middleware(request, handler):
     elif COOKIE_NAME in request.cookies:
         token = request.cookies[COOKIE_NAME]
         uid = uid_from_token(token)
+        request['uid'] = uid
 
         if uid is None:
             return web.HTTPUnauthorized

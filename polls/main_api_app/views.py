@@ -9,7 +9,6 @@ COOKIE_NAME = "kts_cookie"
 # TODO не брать каждый раз куки, а просовывать в мидлваре в request
 # TODO избавиться от костыля с преобразованием ObjectId к строке
 
-
 async def login(request):
     data = {}
 
@@ -70,8 +69,7 @@ async def get_products(request):
 
 
 async def mypage(request):
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     profile = await mm.get_profile(uid)
     profile['_id'] = str(profile['_id'])
@@ -87,8 +85,7 @@ async def mypage(request):
 
 
 async def my_wishes(request):
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     wishes = await mm.get_users_wishes(uid)
 
@@ -96,8 +93,7 @@ async def my_wishes(request):
 
 
 async def add_my_wishe(request):
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     data = {}
 
@@ -114,8 +110,7 @@ async def add_my_wishe(request):
 
 
 async def del_my_wishe(request):
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     data = {}
 
@@ -132,16 +127,14 @@ async def del_my_wishe(request):
 
 
 async def my_intentions(request):
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     intentions = await mm.get_users_intentions(uid)
 
     return web.json_response(intentions)
 
 async def add_my_intentions(request):
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     data = {}
 
@@ -158,8 +151,7 @@ async def add_my_intentions(request):
 
 
 async def del_my_intentions(request):
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     data = {}
 
@@ -186,8 +178,7 @@ async def users_wishes(request):
 
 async def intentions_for_user(request):
     dest_id = request.match_info['dest_id']
-    cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_token(cookie)
+    uid = request['uid']
 
     intentions = await mm.intentions_for_user(uid, dest_id)
 
