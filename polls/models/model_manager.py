@@ -52,7 +52,23 @@ PRODUCTS_ON_PAGE = 10
 class ModelManager:
     async def create_product(self, product):
         document = product.to_dict()
-        await db.product_collection.insert_one(document)
+        res = await db.product_collection.insert_one(document)
+
+        return str(res.inserted_id)
+
+
+    # TODO check crunch wish es id 
+    async def add_product_in_app(self, product, last_id):
+        #TODO append transaction
+        pid = await self.create_product(product)
+        data = product.to_dict()
+        data['p_id'] = pid
+
+        url = db.main_url + str(last_id) + "?pretty"
+
+        async with db.es_session.put(url, json=(data)) as resp:
+            #  print(await resp.text())
+            pass
 
 
     async def get_products(self):
