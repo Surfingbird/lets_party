@@ -3,6 +3,8 @@ import views
 from aiohttp import web
 
 def setup_routes(app):
+    app.router.add_get('/notifications', views.subscription)
+
     app.router.add_get('/auth', views.login)
     app.router.add_delete('/auth', views.logout)
 

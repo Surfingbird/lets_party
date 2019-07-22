@@ -1,13 +1,35 @@
 from aiohttp import web
 import auth
+import aiohttp
 
 from polls.models.model_manager import ModelManager 
 
 mm = ModelManager()
 COOKIE_NAME = "kts_cookie"
 
-# TODO не брать каждый раз куки, а просовывать в мидлваре в request
 # TODO избавиться от костыля с преобразованием ObjectId к строке
+
+async def subscription(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
+
+    # while True:
+    #     await ws.ping()
+
+
+    async for msg in ws:
+        if msg.type == aiohttp.WSMsgType.TEXT:
+            if msg.data == 'close':
+                await ws.close()
+            else:
+                await ws.ping()
+        elif msg.type == aiohttp.WSMsgType.ERROR:
+            print('ws connection closed with exception %s' %
+                  ws.exception())
+
+    print('websocket connection closed')
+
+    return ws
 
 async def login(request):
     data = {}

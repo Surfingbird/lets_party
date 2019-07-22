@@ -2,9 +2,11 @@ import asyncio
 import aiohttp
 import aio_pika
 import json
+import time
 
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
+from collections import deque
 
 import re
 
@@ -13,6 +15,8 @@ import polls.models.db as db
 
 mm = model_manager.ModelManager()
         
+NSEC_IN_SEC = 10 ** 9
+
 class Crawler:
     def __init__(self, root_url, max_rps, workers_count):
         self.workers_count = workers_count
@@ -24,6 +28,9 @@ class Crawler:
         u = urlparse(root_url)
         self.main_netloc = u.netloc
 
+        # requests datas
+        self.time_deque = deque(maxlen=max_rps)
+
         # ElasticSearch values here
         self.es_session = None
         self.es_last_id = 0
@@ -34,6 +41,25 @@ class Crawler:
         self.rabbit_q = None
         self.rabbit_q_name = "urls_q"
 
+    async def check_rps_block(self):
+        count = len(self.time_deque)
+
+        if count < self.max_rps:
+            self.time_deque.append(time.time_ns())
+
+            return True
+
+        delta = self.time_deque[0] - self.time_deque[count - 1]
+        if delta < NSEC_IN_SEC:
+            if count == self.max_rps:
+                self.time_deque.pop_left()
+            self.time_deque.append(time.time_ns())
+
+            return True
+        else:
+            False
+
+        
     async def start_session(self):
         # bs4
         self.session = aiohttp.ClientSession()
@@ -74,6 +100,7 @@ class Crawler:
         prods = soup.find_all('span', 'name')
         if len(prods) != 1:
             return None
+
         item = prods[0]
         product_name = item.get_text()
 
@@ -139,6 +166,11 @@ class Crawler:
                         return 
 
                     soup = 0
+
+                    # place for limit
+                    while not self.check_rps_block():
+                        await asyncio.sleep()
+
                     async with self.session.get(url) as resp:
                         soup = BeautifulSoup(await resp.text(), 'html.parser')
 
@@ -150,7 +182,6 @@ class Crawler:
                     if prod is not None:
                         self.es_last_id += 1
                         await mm.add_product_in_app(prod, self.es_last_id)
-
 
     async def crawl(self):
         await self.start_session()
