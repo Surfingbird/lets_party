@@ -21,6 +21,9 @@ tags:
 - name: "profile"
   description: "Все, что связано с профилями"
 
+- name: "notifications"
+  description: "Все, что связано с push уведомелниями"
+
 - name: "auth"
   description: "Все, что связано с авторизацией"
 
@@ -29,6 +32,21 @@ schemes:
 - "http"
 
 paths:
+  /notifications:
+    get:
+      tags:
+        - "notifications"
+      summary: "Установление ws соединения, для получения уведомлений"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      responses:
+        101:
+          description: "Успешно установлено ws соединение"
+      
+
   /auth:
     get:
       tags:
