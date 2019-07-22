@@ -18,8 +18,12 @@ async def login(request):
     except ValueError:
         return web.Response(status=400)
 
-    response = web.Response()
+    _id = data['id']
+    ok = mm.check_user(_id)
+    if not ok:
+        return web.Response(status=404)
 
+    response = web.Response()
     token = auth.gen_token(data['id'])
     response.set_cookie(name=COOKIE_NAME, value=token)
 
