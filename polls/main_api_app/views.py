@@ -6,15 +6,22 @@ from polls.models.model_manager import ModelManager
 mm = ModelManager()
 COOKIE_NAME = "kts_cookie"
 
-# TODO обработка ошибок deocde json 
 # TODO не брать каждый раз куки, а просовывать в мидлваре в request
 # TODO избавиться от костыля с преобразованием ObjectId к строке
 
-# TODO поддержка JWT
+
 async def login(request):
-    data = await request.json()
+    data = {}
+
+    try:
+        data = await request.json()
+    except ValueError:
+        return web.Response(status=400)
+
     response = web.Response()
-    response.set_cookie(name=COOKIE_NAME, value=data['id'])
+
+    token = auth.gen_token(data['id'])
+    response.set_cookie(name=COOKIE_NAME, value=token)
 
     return response
 
@@ -60,7 +67,7 @@ async def get_products(request):
 
 async def mypage(request):
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
     profile = await mm.get_profile(uid)
     profile['_id'] = str(profile['_id'])
@@ -77,19 +84,23 @@ async def mypage(request):
 
 async def my_wishes(request):
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
     wishes = await mm.get_users_wishes(uid)
 
     return web.json_response(wishes)
 
 
- # TODO валидация JSON
 async def add_my_wishe(request):
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
-    data = await request.json()
+    data = {}
+
+    try:
+        data = await request.json()
+    except ValueError:
+        return web.Response(status=400)
 
     ok = await mm.add_users_wish(uid, data['p_id'])
     if ok is not True:
@@ -98,12 +109,16 @@ async def add_my_wishe(request):
     return web.Response(status=201)
 
 
- # TODO валидация JSON
 async def del_my_wishe(request):
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
-    data = await request.json()
+    data = {}
+
+    try:
+        data = await request.json()
+    except ValueError:
+        return web.Response(status=400)
 
     ok = await mm.del_users_wish(uid, data['p_id'])
     if ok is not True:
@@ -114,19 +129,23 @@ async def del_my_wishe(request):
 
 async def my_intentions(request):
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
     intentions = await mm.get_users_intentions(uid)
 
     return web.json_response(intentions)
 
-
-# TODO валидация JSON
 async def add_my_intentions(request):
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
-    data = await request.json()
+    data = {}
+
+    try:
+        data = await request.json()
+    except ValueError:
+        return web.Response(status=400)
+
     ok = await mm.add_users_intention(uid, data['p_id'], data['dest_id'])
     if ok is not True:
         return web.Response(status=400)
@@ -134,12 +153,18 @@ async def add_my_intentions(request):
     return web.Response(text='add_my_intentions!')
 
 
- # TODO валидация JSON
 async def del_my_intentions(request):
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
-    data = await request.json()
+    data = {}
+
+    try:
+        data = await request.json()
+    except ValueError:
+        return web.Response(status=400)
+
+
     ok = await mm.del_users_intention(uid, data['p_id'], data['dest_id'])
     if ok is not True:
         return web.Response(status=400)
@@ -158,7 +183,7 @@ async def users_wishes(request):
 async def intentions_for_user(request):
     dest_id = request.match_info['dest_id']
     cookie = request.cookies[COOKIE_NAME]
-    uid = auth.uid_from_cookie(cookie)
+    uid = auth.uid_from_token(cookie)
 
     intentions = await mm.intentions_for_user(uid, dest_id)
 
