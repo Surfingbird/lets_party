@@ -52,7 +52,7 @@ class Crawler:
         delta = self.time_deque[0] - self.time_deque[count - 1]
         if delta < NSEC_IN_SEC:
             if count == self.max_rps:
-                self.time_deque.pop_left()
+                self.time_deque.popleft()
             self.time_deque.append(time.time_ns())
 
             return True
@@ -148,9 +148,7 @@ class Crawler:
 
     async def do_job(self, idx):
         # TODO rm cranche
-        count = 50
-
-        print(type(self.rabbit_q.iterator()), self.rabbit_q.iterator())
+        count = 500
 
         async for message in self.rabbit_q:
             async with message.process():
@@ -168,7 +166,7 @@ class Crawler:
                     soup = 0
 
                     # place for limit
-                    while not self.check_rps_block():
+                    while not await self.check_rps_block():
                         await asyncio.sleep()
 
                     async with self.session.get(url) as resp:
@@ -181,6 +179,7 @@ class Crawler:
                     prod = self.get_product(soup, url)
                     if prod is not None:
                         self.es_last_id += 1
+                        print(prod)
                         await mm.add_product_in_app(prod, self.es_last_id)
 
     async def crawl(self):
