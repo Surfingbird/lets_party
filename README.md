@@ -1,7 +1,7 @@
 # lets_party
 ![Gifts](https://media0.giphy.com/media/3oz8xBkRsgPTnbK1GM/giphy.gif) 
 
-# Backend часть сервиса подарков
+# Backend часть сервиса для подарков
 
 ## Быстрый старт
 ### Для старта сервиса необходимо выполнить:
