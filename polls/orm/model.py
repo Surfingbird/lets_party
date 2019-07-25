@@ -14,7 +14,7 @@ class Model:
     _id = StringField(required=False, default='')
 
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.changed = None
 
         for key, value in inspect.getmembers(self):
@@ -72,13 +72,6 @@ class Profile(Model):
     _id = StringField(required=False, default='')
     first_name = StringField()
     last_name = StringField()
-
-    def __init__(self, **kwargs):
-        super().__init__()
-
-        for key, value in kwargs.items():
-            self.__class__.__dict__[key].validate(value)
-            self.__dict__[key] = value
 
     class Meta:
         collection_name = 'orm_profiles'
