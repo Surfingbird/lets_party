@@ -2,7 +2,7 @@ import asyncio
 import inspect 
 
 from bson.objectid import ObjectId
-from fields import Field, StringField, IntField
+from fields import Field, StringField, IntField, ListField, WishListField, IntentionListField
 from query_set import QuerySet
 from manager import Manage
 
@@ -18,7 +18,7 @@ class Model:
         self.changed = None
 
         for key, value in inspect.getmembers(self):
-            if issubclass(type(value), Field):
+            if issubclass(type(value), Field) or issubclass(type(value), ListField):
                 self.__dict__[key] = value.default
 
 
@@ -70,8 +70,10 @@ class Model:
 
 class Profile(Model):
     _id = StringField(required=False, default='')
-    first_name = StringField()
-    last_name = StringField()
+    first_name = StringField(required=True, default=None)
+    last_name = StringField(required=True, default=None)
+    wishes = WishListField()
+    intentions = IntentionListField()
 
     class Meta:
         collection_name = 'orm_profiles'

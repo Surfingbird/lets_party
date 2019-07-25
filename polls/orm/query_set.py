@@ -26,10 +26,10 @@ class QuerySet:
                 raise NotImplementedError
 
             if item.start is not None and item.stop is not None:
-                self.qs_limit = item.stop - item.start - 1  
+                self.qs_limit = item.stop - item.start - 1
 
             if item.start is not None:
-                self.qs_offset += item.start       
+                self.qs_offset += item.start
         
             return self
 
