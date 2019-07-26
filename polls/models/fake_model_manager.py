@@ -5,6 +5,8 @@ import asyncio
 
 from polls.models import db
 from faker import Faker
+from models import Product, Profile
+
 
 fake = Faker()
 mm = model_manager.ModelManager()
@@ -18,78 +20,30 @@ class FakeModelManager:
         self.max_id = 99999999
 
 
-    async def _create_fake_products(self, count):
-        products = []
-        for i in range(count):
-            product = model_manager.Product(fake.name(), fake.text(), random.uniform(self.min_price, self.max_price), fake.url(), fake.url())
-            products.append(product.to_dict())
-
-        res = await db.product_collection.insert_many(products)
-        if res is None:
-            return False
-
-        return True
-
-
     async def _create_fake_profile(self):
-        uid = random.randint(1, self.max_id)
-        first_name = fake.name()
-        last_name = fake.name()
-        photo_url = fake.url()
-        wishes = []
-        intentions = []
+        profile = Profile(vk_id=fake.name(),
+                first_name = fake.name()
+                last_name = fake.name()
+                photo_url = fake.url()
+            )
 
-        profile = {
-            'uid' : uid,
-            'first_name' : first_name,
-            'last_name' : last_name,
-            'photo_url' : photo_url,
-            'wishes' : wishes,
-            'intentions' : intentions
-            }
+        await product.save()
 
-        res = await db.profiles_collection.insert_one(profile)
-        return res
+    async def _create_fake_profiles(self, count):
+        for _ in range(count):
+            await _create_fake_profile()
 
 
     async def _create_fake_product(self):
-        product = model_manager.Product(fake.name(), fake.text(), random.uniform(self.min_price, self.max_price), fake.url(), fake.url())
+        product = Product(product_name=fake.name(),
+            discription = fake.text(),
+            price = random.uniform(self.min_price, self.max_price),
+            img_url = fake.url(),
+            product_url = fake.url()
+        )
 
-        res = await db.product_collection.insert_one(product.to_dict())
-        return res
+        await product.save()
 
-
-    async def _create_fake_profiles(self, count):
-        profiles = []
-        idxs = set()
-
-        for i in range(count):
-            uid = 0
-            while True:
-                idx = random.randint(1, self.max_id)
-                if idx not in idxs:
-                    idxs.add(idx)
-                    uid = idx
-                    break
-
-            first_name = fake.name()
-            last_name = fake.name()
-            photo_url = fake.url()
-            wishes = []
-            intentions = []
-
-            profile = {
-                'uid' : uid,
-                'first_name' : first_name,
-                'last_name' : last_name,
-                'photo_url' : photo_url,
-                'wishes' : wishes,
-                'intentions' : intentions
-            }
-            profiles.append(profile)
-
-        res = await db.profiles_collection.insert_many(profiles)
-        if res is None:
-            return False
-
-        return True
+    async def _create_fake_products(self, count):
+        for _ in range(count):
+            await _create_fake_product()
