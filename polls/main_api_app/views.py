@@ -4,6 +4,7 @@ import aiohttp
 
 from polls.models.model_manager import ModelManager 
 from polls.main_api_app.settings import COOKIE_NAME
+from polls.models.orm_models import Product, Profile
 
 mm = ModelManager()
 
@@ -58,11 +59,19 @@ async def logout(request):
 
 # TODO
 async def new_products(request):
-    products = await mm.get_products()
-    for product in products:
-        product['_id'] = str(product['_id'])
+    ws = Product.objects.filter()
+    for i in await ws:
+        print(type(i), i)
 
-    return web.json_response(products)
+
+  
+
+
+    return web.Response(text="404")  
+    # for product in products:
+    #     product['_id'] = str(product['_id'])
+
+    # return web.json_response(products)
 
 
 async def product(request):
@@ -92,15 +101,7 @@ async def get_products(request):
 async def mypage(request):
     uid = request['uid']
 
-    profile = await mm.get_profile(uid)
-    profile['_id'] = str(profile['_id'])
-    for wish in profile['wishes']:
-        wish['p_id'] = str(wish['p_id'])
-        wish.pop('sponsor_id', None)
-
-    for intention in profile['intentions']:
-        intention['p_id'] = str(intention['p_id'])
-        intention['dest_id'] = str(intention['dest_id'])
+    profile = await Profile.objects.get(_id=uid)
     
     return web.json_response(profile)
 
@@ -109,6 +110,7 @@ async def my_wishes(request):
     uid = request['uid']
 
     wishes = await mm.get_users_wishes(uid)
+
 
     return web.json_response(wishes)
 

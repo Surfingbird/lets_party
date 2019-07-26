@@ -3,6 +3,7 @@ import inspect
 
 from polls.orm.db import db
 from polls.orm.query_set import QuerySet
+from bson.objectid import ObjectId
 
 class Manage:
     def __init__(self):
@@ -20,13 +21,28 @@ class Manage:
         obj = self.model_cls(**kwargs)
         await obj.save()
 
-    async def get(self, _id):
-        # obj.model_cls.Meta.collection
-        pass
+
+    async def get(self, **kwargs):
+        collection  = self.model_cls.Meta.collection_name
+        selector = dict()
+
+        for key, value in kwargs.items():
+            self.model_cls.__dict__[key].validate(value)
+            if key == '_id':
+                selector[key] = ObjectId(value)
+            else:
+                selector[key] = value
+
+        data = await db[collection].find_one(selector)
+        data['_id'] = str(data['_id'])
+
+        return data
+
 
 
     def filter(self, **selector):
-        return QuerySet(selector, self.model_cls.collection)
+        collection  = self.model_cls.Meta.collection_name
+        return QuerySet(selector, collection)
 
 
     async def update(self, **kwargs):
