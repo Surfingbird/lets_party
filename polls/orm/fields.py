@@ -38,44 +38,6 @@ class InnerObject:
             if issubclass(type(value), Field) or issubclass(type(value), InnerObject):
                 self.__dict__[key] = value  
 
-        # for key, value in kwargs.items():
-        #     self.__class__.__dict__[key].validate(value)
-        #     self.__dict__[key] = value
-
-        # for key, value in self.__dict__.items():
-        #     self.__dict__[key].validate(value)
-
-    # def check_type(self, value):
-    #     if not isinstance(value, self.__class__):
-    #         raise TypeError 
-
-    # def validate(self, value):
-    #     self.check_type(value)
-
-    #     for key, value in value.__dict__.items():
-    #         self.__dict__[key].validate(value)
-
-
-#     def __str__(self):
-#         return str(self.__dict__)
-
-
-class Wish(InnerObject):
-    reserved = BoolField(required=True, default=False)
-    sponsor_id = StringField(required=False, default='')
-    product_id = StringField(required=True, default='')
-
-    def __init__(self):
-        super().__init__(self.__class__)
-
-
-class Intention(InnerObject):
-    product_id = StringField(required=True, default='')
-    dest_id = StringField(required=False, default='')
-
-    def __init__(self):
-        super().__init__(self.__class__)
-    
 
 class ListField():
     item_type = None
@@ -92,10 +54,3 @@ class ListField():
 
         for item in value:
             self.f_type.validate(item)
-
-
-class WishListField(ListField):
-    item_type = Wish()
-
-class IntentionListField(ListField):
-    item_type = Intention()

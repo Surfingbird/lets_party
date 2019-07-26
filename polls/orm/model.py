@@ -66,14 +66,3 @@ class Model:
         _id = self.__dict__['_id']
 
         await db[collection].delete_one({'_id' : ObjectId(_id)})
-
-
-class Profile(Model):
-    _id = StringField(required=False, default='')
-    first_name = StringField(required=True, default=None)
-    last_name = StringField(required=True, default=None)
-    wishes = WishListField()
-    intentions = IntentionListField()
-
-    class Meta:
-        collection_name = 'orm_profiles'
