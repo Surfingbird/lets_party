@@ -45,9 +45,11 @@ async def new_products(request):
     return web.json_response(data)
 
 
+# OK
 async def product(request):
-    _id = request.match_info['id']
-    product = await mm.get_product(_id)
+    product_id = request.match_info['id']
+
+    product = await Product.objects.get(_id=product_id)
     if product is not None:
         product['_id'] = str(product['_id'])
 
@@ -64,9 +66,6 @@ async def popular_products(request):
 async def search_products(request):
     return web.Response(text='search_products!')
 
-# TODO
-async def get_products(request):
-    return web.Response(text='get_products with pattern!')
 
 # OK
 async def mypage(request):

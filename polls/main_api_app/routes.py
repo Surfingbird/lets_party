@@ -3,16 +3,13 @@ import views
 from aiohttp import web
 
 def setup_routes(app):
-    app.router.add_get('/notifications', views.subscription)
-
     app.router.add_get('/auth', views.login)
     app.router.add_delete('/auth', views.logout)
 
     app.router.add_get('/products', views.new_products)
     app.router.add_get('/products/popular', views.popular_products)
-    app.router.add_get('/products/search', views.search_products)
     app.router.add_get('/products/{id}', views.product)
-    app.router.add_get('/products/search/{pattern}', views.get_products)
+    app.router.add_get('/products/search/{pattern}', views.search_products)
 
     app.router.add_get('/profile/mypage', views.mypage)
 

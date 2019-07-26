@@ -135,19 +135,6 @@ paths:
             items:
               $ref: "#/definitions/Product"
 
-  /products/search:
-    get:
-      tags:
-      - "products"
-      summary: "Установление ws соединения для интерактивного поиска"
-      description: ""
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      responses:
-
   /products/search/[pattern]:
     get:
       tags:
