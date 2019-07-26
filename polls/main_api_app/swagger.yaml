@@ -116,25 +116,6 @@ paths:
             items:
               $ref: "#/definitions/Product"
 
-  /products/popular:
-    get:
-      tags:
-      - "products"
-      summary: "Получить список популярных товаров"
-      description: ""
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      responses:
-        200:
-          description: ""
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Product"
-
   /products/search/[pattern]:
     get:
       tags:

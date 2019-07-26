@@ -5,8 +5,11 @@ import aiohttp
 from polls.models.model_manager import ModelManager 
 from polls.main_api_app.settings import COOKIE_NAME
 from polls.models.orm_models import Product, Profile
+from polls.main_api_app.elastick_client import ElastickClient
 
 mm = ModelManager()
+es_client = ElastickClient()
+es_client.connect()
 
 # OK
 async def login(request):
@@ -58,13 +61,13 @@ async def product(request):
         return web.Response(text="404")  
 
 
-# TODO опциональная ручка
-async def popular_products(request):
-    return web.Response(text='popular_products!')
-
-# TODO
+# OK
 async def search_products(request):
-    return web.Response(text='search_products!')
+    pattern = request.match_info['pattern']
+    data = await es_client.get_products(pattern)
+    
+
+    return web.json_response(data)
 
 
 # OK
