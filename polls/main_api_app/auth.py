@@ -1,8 +1,7 @@
 import jwt
 from aiohttp import web
 
-MAGIC_WORD = "secret"
-COOKIE_NAME = "kts_cookie"
+from polls.main_api_app.settings import COOKIE_NAME, MAGIC_WORD
 
 login_url = "/auth"
 

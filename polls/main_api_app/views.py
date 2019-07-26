@@ -3,37 +3,36 @@ import auth
 import aiohttp
 
 from polls.models.model_manager import ModelManager 
+from polls.main_api_app.settings import COOKIE_NAME
 
 mm = ModelManager()
-COOKIE_NAME = "kts_cookie"
 
-# TODO избавиться от костыля с преобразованием ObjectId к строке
-
+# TODO
 async def subscription(request):
-    ws = web.WebSocketResponse()
-    await ws.prepare(request)
+    pass
+    # ws = web.WebSocketResponse()
+    # await ws.prepare(request)
 
-    # while True:
-    #     await ws.ping()
+    # # while True:
+    # #     await ws.ping()
 
 
-    async for msg in ws:
-        if msg.type == aiohttp.WSMsgType.TEXT:
-            if msg.data == 'close':
-                await ws.close()
-            else:
-                await ws.ping()
-        elif msg.type == aiohttp.WSMsgType.ERROR:
-            print('ws connection closed with exception %s' %
-                  ws.exception())
+    # async for msg in ws:
+    #     if msg.type == aiohttp.WSMsgType.TEXT:
+    #         if msg.data == 'close':
+    #             await ws.close()
+    #         else:
+    #             await ws.ping()
+    #     elif msg.type == aiohttp.WSMsgType.ERROR:
+    #         print('ws connection closed with exception %s' %
+    #               ws.exception())
 
-    print('websocket connection closed')
+    # print('websocket connection closed')
 
-    return ws
+    # return ws
 
 async def login(request):
     data = {}
-
     try:
         data = await request.json()
     except ValueError:
@@ -57,7 +56,7 @@ async def logout(request):
 
     return response
 
-
+# TODO
 async def new_products(request):
     products = await mm.get_products()
     for product in products:
