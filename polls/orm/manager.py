@@ -39,7 +39,6 @@ class Manage:
         return data
 
 
-
     def filter(self, **selector):
         collection  = self.model_cls.Meta.collection_name
         return QuerySet(selector, collection)

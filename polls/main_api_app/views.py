@@ -8,30 +8,7 @@ from polls.models.orm_models import Product, Profile
 
 mm = ModelManager()
 
-# TODO
-async def subscription(request):
-    pass
-    # ws = web.WebSocketResponse()
-    # await ws.prepare(request)
-
-    # # while True:
-    # #     await ws.ping()
-
-
-    # async for msg in ws:
-    #     if msg.type == aiohttp.WSMsgType.TEXT:
-    #         if msg.data == 'close':
-    #             await ws.close()
-    #         else:
-    #             await ws.ping()
-    #     elif msg.type == aiohttp.WSMsgType.ERROR:
-    #         print('ws connection closed with exception %s' %
-    #               ws.exception())
-
-    # print('websocket connection closed')
-
-    # return ws
-
+# OK
 async def login(request):
     data = {}
     try:
@@ -50,28 +27,22 @@ async def login(request):
 
     return response
 
-
+# OK
 async def logout(request):
     response = web.Response()
     response.del_cookie(name=COOKIE_NAME)
 
     return response
 
-# TODO
+# OK
 async def new_products(request):
-    ws = Product.objects.filter()
-    for i in await ws:
-        print(type(i), i)
+    queryset = Product.objects.filter()
+    data = []
+    async for doc in queryset:
+        doc['_id'] = str(doc['_id'])
+        data.append(doc)
 
-
-  
-
-
-    return web.Response(text="404")  
-    # for product in products:
-    #     product['_id'] = str(product['_id'])
-
-    # return web.json_response(products)
+    return web.json_response(data)
 
 
 async def product(request):
@@ -97,7 +68,7 @@ async def search_products(request):
 async def get_products(request):
     return web.Response(text='get_products with pattern!')
 
-
+# OK
 async def mypage(request):
     uid = request['uid']
 

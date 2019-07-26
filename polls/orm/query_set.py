@@ -11,6 +11,11 @@ class QuerySet:
         self.qs_limit = None
         self.qs_offset = 0
 
+        # iterator
+        self.data = None
+        self.i = None
+        self.length = None
+
     def filter(self, **selector):
         self.selector = {**self.selector, **selector}
 
@@ -35,9 +40,24 @@ class QuerySet:
 
         else:
             raise TypeError
-        
-        
-    async def __await__(self):
-        data = await db[self.collection].find(self.selector).skip(self.qs_offset).to_list(length=self.qs_limit)
 
-        return data
+    async def __aiter__(self):
+        self.data = await db[self.collection].find(self.selector).skip(self.qs_offset).to_list(length=self.qs_limit)
+        self.length = len(self.data)
+        self.i = 0
+
+        return self
+
+
+    async def __anext__(self):
+        if self.i < self.length:
+            index = self.i
+            self.i += 1
+
+            return self.data[index]
+        else:
+            raise StopAsyncIteration 
+
+
+    
+    
