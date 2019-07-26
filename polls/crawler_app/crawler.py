@@ -12,8 +12,12 @@ import re
 
 import polls.models.model_manager as model_manager
 import polls.models.db as db
+from  polls.models.orm_models import Product
+from polls.main_api_app.elastick_client import ElastickClient
 
 mm = model_manager.ModelManager()
+es_client = ElastickClient()
+es_client.connect()
         
 NSEC_IN_SEC = 10 ** 9
 
@@ -49,6 +53,7 @@ class Crawler:
 
             return True
 
+        # TODO current time not last time
         delta = self.time_deque[0] - self.time_deque[count - 1]
         if delta < NSEC_IN_SEC:
             if count == self.max_rps:
@@ -119,8 +124,14 @@ class Crawler:
         item = soup.find('div', 'description-text')
         if item is not None:
             discription = item.get_text()
+
+        product = Product(product_name=product_name,
+         discription=discription,
+          price=price,
+          img_url=img_url,
+          product_url=product_url)
             
-        return model_manager.Product(product_name, discription, price, img_url, product_url)
+        return product
 
     def get_urls(self, soup):
         urls = set()
@@ -178,9 +189,10 @@ class Crawler:
 
                     prod = self.get_product(soup, url)
                     if prod is not None:
+                        await prod.save()
                         self.es_last_id += 1
                         print(prod)
-                        await mm.add_product_in_app(prod, self.es_last_id)
+                        await es_client.add_product(prod)
 
     async def crawl(self):
         await self.start_session()

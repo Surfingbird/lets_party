@@ -28,6 +28,7 @@ class Manage:
 
         for key, value in kwargs.items():
             self.model_cls.__dict__[key].validate(value)
+            
             if key == '_id':
                 selector[key] = ObjectId(value)
             else:

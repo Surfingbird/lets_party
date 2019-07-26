@@ -4,6 +4,13 @@
 # Backend часть сервиса для подарков
 
 ## Быстрый старт
+
+### Требования:
+- python 3.7
+- вот эта либа для jwt https://github.com/jpadilla/pyjwt/
+- и остальные зависимости само собой
+
+
 ### Для старта сервиса необходимо выполнить:
 - pip install -e.
 - docker run -d -p 9000:15672 -p 5672:5672 --name rabbitmq rabbitmq:3-management
@@ -11,4 +18,3 @@
 - docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:tag
 - python3 polls/crawler_app/main.py
 - python3 polls/main_api_app/main.py
-- python3 polls/crawler_app/main.py

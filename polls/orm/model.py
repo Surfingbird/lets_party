@@ -11,8 +11,6 @@ from polls.orm.db import db
 class Model:
     objects = Manage()
 
-    _id = StringField(required=False, default='')
-
 
     def __init__(self, **kwargs):
         self.changed = None
@@ -37,7 +35,6 @@ class Model:
             return
 
         self.__class__.__dict__[name].validate(value)
-
         if not value == self.__dict__[name]:
             self.__dict__[name] = value
             self.__dict__['changed'] = True
@@ -46,25 +43,23 @@ class Model:
     async def save(self):
         collection = self.Meta.collection_name
 
-        print(self)
-
-        # if self.changed is None:
-        #     document = self.__dict__.copy()
+        if self.changed is None:
+            document = self.__dict__.copy()
             
-        #     document.pop('_id', document)
-        #     document.pop('changed', document)
+            document.pop('_id', document)
+            document.pop('changed', document)
 
-        #     res = await db[collection].insert_one(document)
-        #     self._id = (str(res.inserted_id))
+            res = await db[collection].insert_one(document)
+            self._id = (str(res.inserted_id))
 
-        # elif self.changed == True:
-        #     document = self.__dict__.copy()
+        elif self.changed == True:
+            document = self.__dict__.copy()
 
-        #     _id = document.pop('_id', document)
-        #     document.pop('changed', document)
+            _id = document.pop('_id', document)
+            document.pop('changed', document)
 
-        #     await db[collection].update_one({'_id' : ObjectId(_id)}, {'$set' : document})
-        #     self.changed = False
+            await db[collection].update_one({'_id' : ObjectId(_id)}, {'$set' : document})
+            self.changed = False
 
 
     async def delete(self):

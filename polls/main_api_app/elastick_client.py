@@ -44,23 +44,4 @@ class ElastickClient:
 
                 result.append(product)
 
-        return
-
-
-
-
-# es = ElastickClient()
-# fm = FakeModelManager()
-
-# async def main():
-#     es.connect()
-
-#     product = await fm._create_fake_product()
-#     product.product_name = 'lol'
-#     await product.save()
-
-#     await es.add_product(product)
-#     await es.get_products(product.product_name)
-
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(main())
+        return result

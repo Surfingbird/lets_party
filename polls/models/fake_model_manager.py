@@ -25,6 +25,8 @@ class FakeModelManager:
 
         await profile.save()
 
+        return profile
+
     async def _create_fake_profiles(self, count):
         for _ in range(count):
             await self._create_fake_profile()
@@ -39,6 +41,8 @@ class FakeModelManager:
         )
 
         await product.save()
+
+        return product
 
     async def _create_fake_products(self, count):
         for _ in range(count):
