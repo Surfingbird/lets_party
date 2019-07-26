@@ -13,7 +13,7 @@ def uid_from_token(token):
     except jwt.InvalidSignatureError:
         return None
 
-    return str(res)
+    return res['id']
 
 
 def gen_token(uid):
@@ -29,6 +29,7 @@ async def check_token_middleware(request, handler):
     elif COOKIE_NAME in request.cookies:
         token = request.cookies[COOKIE_NAME]
         uid = uid_from_token(token)
+
         request['uid'] = uid
 
         if uid is None:
