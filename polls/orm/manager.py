@@ -1,8 +1,8 @@
-from query_set import QuerySet
 import asyncio
 import inspect 
 
-from db import db
+from polls.orm.db import db
+from polls.orm.query_set import QuerySet
 
 class Manage:
     def __init__(self):
@@ -19,6 +19,10 @@ class Manage:
     async def create(self, **kwargs):
         obj = self.model_cls(**kwargs)
         await obj.save()
+
+    async def get(self, _id):
+        # obj.model_cls.Meta.collection
+        pass
 
 
     def filter(self, **selector):
