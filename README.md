@@ -12,6 +12,8 @@
 
 
 ### Для старта сервиса необходимо выполнить:
+- python3 -m venv venv
+- source venv/bin/activate
 - pip install -e.
 - docker run -d -p 9000:15672 -p 5672:5672 --name rabbitmq rabbitmq:3-management
 - docker run -d -p 27017:27017 --name mongodb mongo:4.0.4
