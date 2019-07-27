@@ -45,24 +45,28 @@ class Crawler:
         self.rabbit_q = None
         self.rabbit_q_name = "urls_q"
 
+    # TODO FIX
     async def check_rps_block(self):
-        count = len(self.time_deque)
 
-        if count < self.max_rps:
-            self.time_deque.append(time.time_ns())
+        # count = len(self.time_deque)
 
-            return True
+        # if count < self.max_rps:
+        #     self.time_deque.append(time.time_ns())
 
-        # TODO current time not last time
-        delta = self.time_deque[0] - self.time_deque[count - 1]
-        if delta < NSEC_IN_SEC:
-            if count == self.max_rps:
-                self.time_deque.popleft()
-            self.time_deque.append(time.time_ns())
+        #     return True
 
-            return True
-        else:
-            False
+        # # TODO current time not last time
+        # delta = self.time_deque[0] - self.time_deque[count - 1]
+        # if delta < NSEC_IN_SEC:
+        #     if count == self.max_rps:
+        #         self.time_deque.popleft()
+        #     self.time_deque.append(time.time_ns())
+
+        #     return True
+        # else:
+        #     False
+
+        return True
 
         
     async def start_session(self):
@@ -112,7 +116,7 @@ class Crawler:
         item = soup.find('span', 'add-discount-text-price')
         if item is None:
             return None
-        price = get_clear_price(item.get_text())
+        price = int(get_clear_price(item.get_text()))
         
         item = soup.find('img', 'preview-photo')
         if item is None:
@@ -159,7 +163,7 @@ class Crawler:
 
     async def do_job(self, idx):
         # TODO rm cranche
-        count = 500
+        count = 100
 
         async for message in self.rabbit_q:
             async with message.process():
