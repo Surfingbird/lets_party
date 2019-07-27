@@ -10,7 +10,8 @@ async def cors_middleware(request, handler):
 
 
 if __name__ == "__main__":
-    app = web.Application(middlewares=[cors_middleware, auth.check_token_middleware])
+    # app = web.Application(middlewares=[cors_middleware, auth.check_token_middleware])
+    app = web.Application()
     setup_routes(app)
 
     web.run_app(app)
