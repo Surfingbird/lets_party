@@ -133,6 +133,7 @@ async def del_my_wishe(request):
     return web.Response()
 
 
+# OK
 async def my_intentions(request):
     uid = request['uid']
 
@@ -161,6 +162,7 @@ async def add_my_intentions(request):
     return web.Response(status=201)
 
 
+# TODO
 async def del_my_intentions(request):
     uid = request['uid']
 
@@ -171,8 +173,10 @@ async def del_my_intentions(request):
     except ValueError:
         return web.Response(status=400)
 
+    pid = data['product_id']
+    dest_id = data['dest_id']
 
-    ok = await mm.del_users_intention(uid, data['p_id'], data['dest_id'])
+    ok = await mm.del_users_intention(uid, pid, dest_id)
     if ok is not True:
         return web.Response(status=400)
 

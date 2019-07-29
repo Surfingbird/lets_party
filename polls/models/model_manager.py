@@ -86,7 +86,7 @@ class ModelManager:
 
     # TODO написать тест
     async def check_intention(self, uid, pid, dest_id):
-        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid), 'intentions' : {'p_id' : ObjectId(pid), 'dest_id' : ObjectId(dest_id)}})
+        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid), 'intentions' : {'product_id' : pid, 'dest_id' : dest_id}})
         if res is None:
             return False
         else:
@@ -274,24 +274,21 @@ class ModelManager:
         if res is None:
             return False
 
-        res = await self.check_intention(uid, pid, dest_id)
-        if res is None:
-            return False
-
         # TODO развернуть кластер mongodb
         # async with await db.client.start_session() as s:
         #     async with s.start_transaction():
         s = None
+        collection = Profile.Meta.collection_name
 
         condition, update = close_res_users_wish_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(condition, update, session=s)
+        res = await db[collection].update_one(condition, update, session=s)
         if res is None:
             # await s.abort_transaction()
 
             return False
 
         condition, update = del_users_intention_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(condition, update, session=s)
+        res = await db[collection].update_one(condition, update, session=s)
         if res is None:
             # await s.abort_transaction()
 
@@ -308,7 +305,7 @@ def add_users_intention_query(uid, pid, dest_id):
     return {'_id' : ObjectId(uid)}, {'$addToSet' : {'intentions' : {'product_id' : pid, 'dest_id' : dest_id}}}
 
 def del_users_intention_query(uid, pid, dest_id):
-    return {'_id' : ObjectId(uid)}, {'$pull' : {'intentions' : {'p_id' : ObjectId(pid), 'dest_id' : ObjectId(dest_id)}}}
+    return {'_id' : ObjectId(uid)}, {'$pull' : {'intentions' : {'product_id' : pid, 'dest_id' : dest_id}}}
 
 def del_users_intention_query_wo_sponsor(uid, pid):
     return {}, {'$pull' : {'wishes' : {'p_id' : ObjectId(pid), 'dest_id' : ObjectId(uid)}}}
@@ -322,4 +319,4 @@ def reserve_users_wish_query(uid, pid, dest_id):
 
 # TODO описать логику проверки поля reserved, чтобы не перезаписывать спонсора
 def close_res_users_wish_query(uid, pid, dest_id):
-    return {'_id': ObjectId(dest_id), 'wishes.p_id' : ObjectId(pid)}, {'$set' : {'wishes.$.reserved' : False}}
+    return {'_id': ObjectId(dest_id), 'wishes.p_id' : pid}, {'$set' : {'wishes.$.reserved' : False}}
