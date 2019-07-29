@@ -75,10 +75,14 @@ async def mypage(request):
     uid = request['uid']
 
     profile = await Profile.objects.get(_id=uid)
-    
+    # TODO убрать
+    for wish in profile['wishes']:
+        wish['product_id'] = str(wish['product_id'])
+
     return web.json_response(profile)
 
 
+# TO
 async def my_wishes(request):
     uid = request['uid']
 
@@ -98,7 +102,8 @@ async def add_my_wishe(request):
     except ValueError:
         return web.Response(status=400)
 
-    ok = await mm.add_users_wish(uid, data['p_id'])
+    pid = data['product_id']
+    ok = await mm.add_users_wish(uid, pid)
     if ok is not True:
         return web.Response(status=400)
 

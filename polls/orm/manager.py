@@ -9,10 +9,10 @@ class Manage:
     def __init__(self):
         self.model_cls = None
 
-
+# ВОПРОС!
     def __get__(self, instance, owner):
-        if self.model_cls is None:
-            self.model_cls = owner
+        # if self.model_cls is None:
+        self.model_cls = owner
 
         return self
 
@@ -31,11 +31,13 @@ class Manage:
             
             if key == '_id':
                 selector[key] = ObjectId(value)
+
             else:
                 selector[key] = value
 
         data = await db[collection].find_one(selector)
-        data['_id'] = str(data['_id'])
+        if not(data is None):
+            data['_id'] = str(data['_id'])
 
         return data
 
