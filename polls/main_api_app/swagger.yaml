@@ -3,63 +3,34 @@ info:
   description: "Это документация к API сервиса [service_name]"
   version: "1.0.0"
   title: "[service_name]"
-  # termsOfService: "http://swagger.io/terms/"
-  # contact:
-  #   email: "apiteam@swagger.io"
-  # license:
-  #   name: "Apache 2.0"
-  #   url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-# host: "petstore.swagger.io"
-# basePath: "/v2"
+
 tags:
 - name: "products"
   description: "Все, что связано с событиями"
-  externalDocs:
-    # description: "Find out more"
-    # url: "http://swagger.io"
 
 - name: "profile"
   description: "Все, что связано с профилями"
-
-# - name: "notifications"
-#   description: "Все, что связано с push уведомелниями"
 
 - name: "auth"
   description: "Все, что связано с авторизацией"
 
 schemes:
-# - "https"
+- "https"
 - "http"
 
 paths:
-  # /notifications:
-  #   get:
-  #     tags:
-  #       - "notifications"
-  #     summary: "Установление ws соединения, для получения уведомлений"
-  #     consumes:
-  #     - "application/json"
-  #     produces:
-  #     - "application/json"
-  #     parameters:
-  #     responses:
-  #       101:
-  #         description: "Успешно установлено ws соединение"
-      
-
   /auth:
     get:
       tags:
       - "auth"
       consumes:
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
-        - name: "id"
-          description: ""
-          required: true
-          type: "string"
+      - name: "id"
+        in: "body"
+        required: true
+        type: "string"
+        
       responses:
         200:
           description: "Успешно авторизовались"
@@ -67,11 +38,6 @@ paths:
     delete:
       tags:
       - "auth"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
       responses:
         200:
           description: "Успешно разлогинились"
@@ -84,11 +50,39 @@ paths:
       - "products"
       summary: "Получить список новых товаров"
       description: ""
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+
+  /products/list:
+    get:
+      tags:
+      - "products"
+      summary: "Получить список новых товаров"
+      description: ""
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
+      - name: "start"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int64"
+        
+      - name: "petId"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int64"
+        
       responses:
         200:
           description: ""
@@ -103,55 +97,56 @@ paths:
       - "products"
       summary: "Получить информацию о товаре"
       description: ""
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       parameters:
+      - name: "slug"
+        in: "path"
+        required: true
+        type: "string"
       responses:
         200:
-          description: ""
+          description: "показать данные товара"
           schema:
-            item:
-              $ref: "#/definitions/Product"
+            $ref: "#/definitions/Product"
+        400:
+          description: "некорректный запрос"
 
-  /products/search/[pattern]:
+  /products/search:
     get:
       tags:
       - "products"
       summary: "Получения товаров подходящих под паттерн поиска"
       description: ""
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       parameters:
+      - name: "pattern"
+        in: "query"
+        required: true
+        type: "string"
       responses:
         200:
           description: ""
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Product"
+              $ref: "#/definitions/LiteProduct"
 
 
   /profile/mypage:
     get:
       tags:
       - "profile"
-      summary: ""
-      description: ""
-      consumes:
-      - "application/json"
+      summary: "информация обо мне"
+      description: "Получение информации пользователя"
       produces:
       - "application/json"
-      parameters:
       responses:
         200:
-          description: ""
+          description: "successful operation"
           schema:
-            item:
-              $ref: "#/definitions/Profile"
+            $ref: "#/definitions/Profile"
 
 
   /profile/mypage/wishes:
@@ -160,11 +155,8 @@ paths:
       - "profile"
       summary: "Список моих пожеланий"
       description: ""
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
-      parameters:
       responses:
         200:
           description: ""
@@ -177,17 +169,15 @@ paths:
       tags:
       - "profile"
       summary: "Добавить товар в список желаний"
-      description: ""
       consumes:
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
-      - name: "product_id"
-        description: ""
+      - in: "body"
+        name: "body"
         required: true
-        type: "string"
-
+        schema:
+          $ref: "#/definitions/ProductId"
+        
       responses:
         201:
           description: ""
@@ -200,13 +190,12 @@ paths:
 
       consumes:
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
-      - name: "product_id"
-        description: ""
+      - in: "body"
+        name: "body"
         required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/ProductId"
 
       responses:
         200:
@@ -218,13 +207,8 @@ paths:
       tags:
       - "profile"
       summary: "Список того, что я хочу подарить"
-      description: ""
-
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
-      parameters:
       responses:
         200:
           description: ""
@@ -236,22 +220,14 @@ paths:
     post:
       tags:
       - "profile"
-      summary: "Добавить намерение подарить товар"
-      description: ""
       consumes:
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
-      - name: "product_id"
-        description: ""
+      - in: "body"
+        name: "body"
         required: true
-        type: "string"
-
-      - name: "dest_id"
-        description: ""
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/Intention"
 
       responses:
         201:
@@ -261,21 +237,14 @@ paths:
       tags:
       - "profile"
       summary: "Отказаться дарить товар"
-      description: ""
       consumes: 
       - "application/json"
-      produces:
-      - "application/json"
       parameters:
-      - name: "product_id"
-        description: ""
+      - in: "body"
+        name: "body"
         required: true
-        type: "string"
-
-      - name: "dest_id"
-        description: ""
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/Intention"
 
       responses:
         200:
@@ -287,12 +256,13 @@ paths:
       tags:
       - "profile"
       summary: "Список пожеланий пользователя"
-      description: ""
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       parameters:
+      - name: "dest_id"
+        in: "path"
+        required: true
+        type: "string"
       responses:
         200:
           description: ""
@@ -300,18 +270,20 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/ExtendedWish"
+              
 
   /profile/[dest_id]/intentions:
     get:
       tags:
       - "profile"
       summary: "Список того, что мы хотим подарить пользователю"
-      description: ""
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
       parameters:
+      - name: "dest_id"
+        in: "path"
+        required: true
+        type: "string"
       responses:
         200:
           description: ""
@@ -321,6 +293,16 @@ paths:
               $ref: "#/definitions/ExtendedIntention"
 
 definitions:
+  LiteProduct:
+    type: "object"
+    properties:
+      _id:
+        type: "string"
+
+      product_name:
+        type: "string"
+
+
   Product:
     type: "object"
     properties:
@@ -367,11 +349,13 @@ definitions:
 
       wishes:
         type: "array"
-        format: User
+        items:
+          $ref: "#/definitions/Wish"
 
       intentions:
         type: "array"
-        format: User
+        items:
+          $ref: "#/definitions/Intention"
 
   Wish:
     type: "object"
@@ -380,7 +364,7 @@ definitions:
         type: "string"
 
       reserved:
-        type: "bool"
+        type: "boolean"
 
       sponsor_id:
         type: "string"
@@ -401,7 +385,7 @@ definitions:
         type: "string"
 
       reserved:
-        type: "bool"
+        type: "boolean"
 
       sponsor_id:
         type: "string"
@@ -416,7 +400,7 @@ definitions:
         type: "string"
 
       price:
-        type: "float"
+        type: "number"
         format: "float32"
         
       img_url:
@@ -446,7 +430,7 @@ definitions:
         type: "string"
 
       price:
-        type: "float"
+        type: "number"
         format: "float32"
         
       img_url:
@@ -456,3 +440,9 @@ definitions:
       product_url:
         type: "string"
         format: "URL"
+        
+  ProductId:
+    type: "object"
+    properties:
+      product_id:
+        type: "string"
