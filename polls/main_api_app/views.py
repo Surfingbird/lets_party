@@ -61,11 +61,11 @@ async def product(request):
         return web.Response(text="404")  
 
 
-# OK
+# TODO
 async def search_products(request):
-    pattern = request.match_info['pattern']
+    pattern = request.query['pattern']
     data = await es_client.get_products(pattern)
-    
+
 
     return web.json_response(data)
 

@@ -38,10 +38,12 @@ class ElastickClient:
             data = await resp.json()
 
             for node in data['hits']['hits']:
-                product = node['_source']
-                _id = product.pop('id')
-                product['_id'] = _id
+                lite_info = dict()
 
-                result.append(product)
+                product = node['_source']
+                lite_info['_id'] = product['id']
+                lite_info['product_name'] = product['product_name']
+
+                result.append(lite_info)
 
         return result
