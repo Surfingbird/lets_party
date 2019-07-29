@@ -61,7 +61,7 @@ async def product(request):
         return web.Response(text="404")  
 
 
-# TODO
+# OK
 async def search_products(request):
     pattern = request.query['pattern']
     data = await es_client.get_products(pattern)
@@ -69,6 +69,22 @@ async def search_products(request):
 
     return web.json_response(data)
 
+
+# OK
+async def products_list(request):
+    start = request.query['start']
+    limit = request.query['limit']
+
+    # TODO check valid value
+    queryset = Product.objects.filter().offset(start).limit(limit)
+
+    products_page = []
+
+    async for product in queryset:
+        product['_id'] = str(product['_id'])
+        products_page.append(product)
+
+    return web.json_response(products_page)
 
 # OK
 async def mypage(request):

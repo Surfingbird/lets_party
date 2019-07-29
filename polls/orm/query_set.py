@@ -18,12 +18,15 @@ class QuerySet:
 
     def filter(self, **selector):
         self.selector = {**self.selector, **selector}
+        return self
 
     def limit(self, limit):
-        self.qs_limit = limit
+        self.qs_limit = int(limit)
+        return self
     
     def offset(self, offset):
-        self.qs_offset = offset
+        self.qs_offset += int(offset)
+        return self
 
     def __getitem__(self, item):
         if isinstance(item, slice):

@@ -7,6 +7,7 @@ def setup_routes(app):
     app.router.add_delete('/auth', views.logout)
 
     app.router.add_get('/products', views.new_products)
+    app.router.add_get('/products/list', views.products_list)
     app.router.add_get('/products/search', views.search_products)
     app.router.add_get('/products/{id}', views.product)
 
