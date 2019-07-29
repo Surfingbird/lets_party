@@ -207,23 +207,19 @@ class ModelManager:
 
 
     async def intentions_for_user(self, uid, dest_id):
-        res = await self.get_profile(uid)
-        if res is None:
+        profile = await Profile.objects.get(_id=uid)
+        if profile is None:
             return None
 
         extended_intentions = []
 
-        for intention in res['intentions']:
-            str_dest_id = str(intention['dest_id'])
-            if str_dest_id == dest_id:
-                str_p_id = str(intention['p_id'])
+        for intention in profile['intentions']:
+            if dest_id == intention['dest_id']:
+                product_id = intention['product_id']
+                product = await Product.objects.get(_id=product_id)
 
-                product = await self.get_product(str_p_id)
                 if product is not None:
                     extended =  {**intention, **product}
-                    extended['p_id'] = str_p_id
-                    extended['_id'] = str_p_id
-                    extended['dest_id'] = str_dest_id
 
                     extended_intentions.append(extended)
 

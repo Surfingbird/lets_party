@@ -114,7 +114,7 @@ async def add_my_wishe(request):
 
     return web.Response(status=201)
 
-#  OK TODO
+#  OK
 async def del_my_wishe(request):
     uid = request['uid']
 
@@ -192,7 +192,7 @@ async def users_wishes(request):
 
     return web.json_response(wishes)
 
-
+# OK
 async def intentions_for_user(request):
     dest_id = request.match_info['dest_id']
     uid = request['uid']
