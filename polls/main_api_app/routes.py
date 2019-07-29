@@ -3,7 +3,7 @@ import views
 from aiohttp import web
 
 def setup_routes(app):
-    app.router.add_get('/auth', views.login)
+    app.router.add_post('/auth', views.login)
     app.router.add_delete('/auth', views.logout)
 
     app.router.add_get('/products', views.new_products)
