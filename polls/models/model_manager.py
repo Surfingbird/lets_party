@@ -169,6 +169,7 @@ class ModelManager:
 
         return True
 
+    # OK
     async def get_users_wishes(self, uid):
         res = await Profile.objects.get(_id=uid)
         if res is None:
@@ -185,6 +186,8 @@ class ModelManager:
 
         return extended_wishes
 
+
+    # OK
     async def get_users_intentions(self, uid):
         res = await Profile.objects.get(_id=uid)
         if res is None:
@@ -200,6 +203,8 @@ class ModelManager:
                 extended_intentions.append(extended)
 
         return extended_intentions
+
+
 
     async def intentions_for_user(self, uid, dest_id):
         res = await self.get_profile(uid)
@@ -223,6 +228,7 @@ class ModelManager:
                     extended_intentions.append(extended)
 
         return extended_intentions
+
 
 
     async def add_users_intention(self, uid, pid, dest_id):
@@ -252,7 +258,7 @@ class ModelManager:
             return False
 
         selector, update = reserve_users_wish_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(selector, update, session=s)
+        res = await db[collection].update_one(selector, update, session=s)
         if res is None:
             # await s.abort_transaction()
 
@@ -315,7 +321,7 @@ def del_users_wish_query(uid, pid):
 
 
 def reserve_users_wish_query(uid, pid, dest_id):
-    return {'_id': ObjectId(dest_id), 'wishes.p_id' : ObjectId(pid)}, {'$set' : {'wishes.$.reserved' : True, 'wishes.$.sponsor_id' : ObjectId(uid)}}
+    return {'_id': ObjectId(dest_id), 'wishes.product_id' : pid}, {'$set' : {'wishes.$.reserved' : True, 'wishes.$.sponsor_id' : uid}}
 
 # TODO описать логику проверки поля reserved, чтобы не перезаписывать спонсора
 def close_res_users_wish_query(uid, pid, dest_id):
