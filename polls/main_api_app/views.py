@@ -120,7 +120,8 @@ async def del_my_wishe(request):
     except ValueError:
         return web.Response(status=400)
 
-    ok = await mm.del_users_wish(uid, data['p_id'])
+    pid = data['product_id']
+    ok = await mm.del_users_wish(uid, pid)
     if ok is not True:
         return web.Response(status=400)
     

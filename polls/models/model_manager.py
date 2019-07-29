@@ -138,32 +138,34 @@ class ModelManager:
 
 # TODO проверить, корректно и работает
     async def del_users_wish(self, uid, pid):
-        res = await self.check_user(uid)
-        if res is None:
+        product = await Product.objects.get(_id=pid)
+        if product is None:
             return False
 
-        res = await self.check_wish(uid, pid)
-        if res is None:
+        profile = await Profile.objects.get(_id=uid)
+        if profile is None:
             return False
 
         # TODO развернуть кластер mongodb
         # async with await db.client.start_session() as s:
         #     async with s.start_transaction():
         s = None
+        collection = Profile.Meta.collection_name
 
         selector, update = del_users_wish_query(uid, pid)
-        res = await db.profiles_collection.update_one(selector, update, session=s)
+        res = await db[collection].update_one(selector, update, session=s)
         if res is None:
             # await s.abort_transaction()
 
             return False
 
-        selector, update = del_users_intention_query_wo_sponsor(uid, pid)
-        res = await db.profiles_collection.update_one(selector, update, session=s)
-        if res is None:
-            # await s.abort_transaction()
+        # TODO FIX
+        # selector, update = del_users_intention_query_wo_sponsor(uid, pid)
+        # res = await db.profiles_collection.update_one(selector, update, session=s)
+        # if res is None:
+        #     # await s.abort_transaction()
 
-            return False
+        #     return False
 
         return True
 
@@ -318,7 +320,7 @@ def del_users_intention_query_wo_sponsor(uid, pid):
     return {}, {'$pull' : {'wishes' : {'p_id' : ObjectId(pid), 'dest_id' : ObjectId(uid)}}}
 
 def del_users_wish_query(uid, pid):
-    return {'_id' : ObjectId(uid)}, {'$pull' : {'wishes' : {'p_id' : ObjectId(pid)}}}
+    return {'_id' : ObjectId(uid)}, {'$pull' : {'wishes' : {'product_id' : pid}}}
 
 
 def reserve_users_wish_query(uid, pid, dest_id):
