@@ -33,33 +33,9 @@
 		},
 		{
 			"name": "GET '/products/{slug}'",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://0.0.0.0:8080/products/5d2c7cf436e8a861bb87a941",
-					"protocol": "http",
-					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
-					],
-					"port": "8080",
-					"path": [
-						"products",
-						"5d2c7cf436e8a861bb87a941"
-					]
-				}
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
 			},
-			"response": []
-		},
-		{
-			"name": "GET '/products/popular'",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -68,7 +44,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/products/popular",
+					"raw": "http://0.0.0.0:8080/products/5d3aedd8775229b88002e68f",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -79,34 +55,7 @@
 					"port": "8080",
 					"path": [
 						"products",
-						"popular"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET '/products/search'",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://0.0.0.0:8080/products/search",
-					"protocol": "http",
-					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
-					],
-					"port": "8080",
-					"path": [
-						"products",
-						"search"
+						"5d3aedd8775229b88002e68f"
 					]
 				}
 			},
@@ -122,7 +71,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/products/search/pattern",
+					"raw": "http://0.0.0.0:8080/products/search/Todd",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -134,7 +83,7 @@
 					"path": [
 						"products",
 						"search",
-						"pattern"
+						"Todd"
 					]
 				}
 			},
@@ -142,6 +91,9 @@
 		},
 		{
 			"name": "GET '/profile/mypage'",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -209,7 +161,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"p_id\" : \"5d2c7db535aa0caad140b95e\"\n}"
+					"raw": "{\n\t\"product_id\" : \"5d3e934b5328ecddc073d238\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/wishes",
@@ -244,7 +196,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"p_id\" : \"5d2c7cf436e8a861bb87a941\"\n}"
+					"raw": "{\n\t\"product_id\" : \"5d3e934b5328ecddc073d238\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/wishes",
@@ -307,7 +259,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"p_id\" : \"5d2c7db335aa0caad140b958\",\n\t\"dest_id\" : \"5d2cca26e6f19f24a6a9fd2a\"\n}"
+					"raw": "{\n\t\"product_id\" : \"5d3e934b5328ecddc073d238\",\n\t\"dest_id\" : \"5d3e934b5328ecddc073d224\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/intentions",
@@ -342,7 +294,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"p_id\" : \"5d2c7db335aa0caad140b958\",\n\t\"dest_id\" : \"5d2cca26e6f19f24a6a9fd2a\"\n}"
+					"raw": "{\n\t\"product_id\" : \"5d3e934b5328ecddc073d238\",\n\t\"dest_id\" : \"5d3e934b5328ecddc073d224\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/profile/mypage/intentions",
@@ -411,7 +363,7 @@
 					"raw": "{\n\t\n}\n"
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8080/profile/5d2cca26e6f19f24a6a9fd2a/intentions",
+					"raw": "http://0.0.0.0:8080/profile/5d3e934b5328ecddc073d224/intentions",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -422,7 +374,7 @@
 					"port": "8080",
 					"path": [
 						"profile",
-						"5d2cca26e6f19f24a6a9fd2a",
+						"5d3e934b5328ecddc073d224",
 						"intentions"
 					]
 				}
@@ -446,7 +398,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\" : \"5d2cca26e6f19f24a6a9fd31\"\n}"
+					"raw": "{\n\t\"id\" : \"5d3e934b5328ecddc073d225\"\n}"
 				},
 				"url": {
 					"raw": "http://0.0.0.0:8080/auth",

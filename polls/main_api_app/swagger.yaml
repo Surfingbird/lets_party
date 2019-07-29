@@ -21,8 +21,8 @@ tags:
 - name: "profile"
   description: "Все, что связано с профилями"
 
-- name: "notifications"
-  description: "Все, что связано с push уведомелниями"
+# - name: "notifications"
+#   description: "Все, что связано с push уведомелниями"
 
 - name: "auth"
   description: "Все, что связано с авторизацией"
@@ -32,19 +32,19 @@ schemes:
 - "http"
 
 paths:
-  /notifications:
-    get:
-      tags:
-        - "notifications"
-      summary: "Установление ws соединения, для получения уведомлений"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      responses:
-        101:
-          description: "Успешно установлено ws соединение"
+  # /notifications:
+  #   get:
+  #     tags:
+  #       - "notifications"
+  #     summary: "Установление ws соединения, для получения уведомлений"
+  #     consumes:
+  #     - "application/json"
+  #     produces:
+  #     - "application/json"
+  #     parameters:
+  #     responses:
+  #       101:
+  #         description: "Успешно установлено ws соединение"
       
 
   /auth:
@@ -112,8 +112,7 @@ paths:
         200:
           description: ""
           schema:
-            type: "array"
-            items:
+            item:
               $ref: "#/definitions/Product"
 
   /products/search/[pattern]:
@@ -184,7 +183,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "p_id"
+      - name: "product_id"
         description: ""
         required: true
         type: "string"
@@ -204,7 +203,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "p_id"
+      - name: "product_id"
         description: ""
         required: true
         type: "string"
@@ -244,7 +243,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "p_id"
+      - name: "product_id"
         description: ""
         required: true
         type: "string"
@@ -268,7 +267,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "p_id"
+      - name: "product_id"
         description: ""
         required: true
         type: "string"
@@ -389,7 +388,7 @@ definitions:
   Intention:
     type: "object"
     properties:
-      p_id:
+      product_id:
         type: "string"
 
       dest_id:
@@ -398,7 +397,7 @@ definitions:
   ExtendedWish:
     type: "object"
     properties:
-      p_id:
+      product_id:
         type: "string"
 
       reserved:
@@ -431,7 +430,7 @@ definitions:
   ExtendedIntention:
     type: "object"
     properties:
-      p_id:
+      product_id:
         type: "string"
 
       dest_id:
