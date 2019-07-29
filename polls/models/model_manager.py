@@ -325,4 +325,4 @@ def reserve_users_wish_query(uid, pid, dest_id):
 
 # TODO описать логику проверки поля reserved, чтобы не перезаписывать спонсора
 def close_res_users_wish_query(uid, pid, dest_id):
-    return {'_id': ObjectId(dest_id), 'wishes.p_id' : pid}, {'$set' : {'wishes.$.reserved' : False}}
+    return {'_id': ObjectId(dest_id), 'wishes.product_id' : pid}, {'$set' : {'wishes.$.reserved' : False}}
