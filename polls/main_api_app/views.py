@@ -79,6 +79,11 @@ async def mypage(request):
     for wish in profile['wishes']:
         wish['product_id'] = str(wish['product_id'])
 
+    # TODO убрать
+    for intention in profile['intentions']:
+        intention['product_id'] = str(intention['product_id'])
+        intention['dest_id'] = str(intention['dest_id'])
+
     return web.json_response(profile)
 
 
@@ -135,6 +140,7 @@ async def my_intentions(request):
 
     return web.json_response(intentions)
 
+# OK
 async def add_my_intentions(request):
     uid = request['uid']
 
@@ -145,11 +151,14 @@ async def add_my_intentions(request):
     except ValueError:
         return web.Response(status=400)
 
-    ok = await mm.add_users_intention(uid, data['p_id'], data['dest_id'])
+    pid = data['product_id']
+    dest_id = data['dest_id']
+
+    ok = await mm.add_users_intention(uid, pid, dest_id)
     if ok is not True:
         return web.Response(status=400)
 
-    return web.Response(text='add_my_intentions!')
+    return web.Response(status=201)
 
 
 async def del_my_intentions(request):

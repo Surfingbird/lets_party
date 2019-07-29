@@ -186,20 +186,17 @@ class ModelManager:
         return extended_wishes
 
     async def get_users_intentions(self, uid):
-        res = await self.get_profile(uid)
+        res = await Profile.objects.get(_id=uid)
         if res is None:
             return None
 
         extended_intentions = []
 
         for intention in res['intentions']:
-            str_id = str(intention['p_id'])
-            product = await self.get_product(str_id)
+            product_id = intention['product_id']
+            product = await Product.objects.get(_id=product_id)
             if product is not None:
                 extended =  {**intention, **product}
-                extended['p_id'] = str_id
-                extended['_id'] = str_id
-
                 extended_intentions.append(extended)
 
         return extended_intentions
@@ -245,9 +242,10 @@ class ModelManager:
         # async with await db.client.start_session() as s:
         #     async with s.start_transaction():
         s = None
+        collection = Profile.Meta.collection_name
 
         selector, update = add_users_intention_query(uid, pid, dest_id)
-        res = await db.profiles_collection.update_one(selector, update, session=s)
+        res = await db[collection].update_one(selector, update, session=s)
         if res is None:
             # await s.abort_transaction()
 
@@ -307,7 +305,7 @@ def add_users_wish_query(uid, pid):
     return {'_id' : ObjectId(uid)}, {'$addToSet' : {'wishes' : {'product_id' : pid, 'reserved' : False}}}
 
 def add_users_intention_query(uid, pid, dest_id):
-    return {'_id' : ObjectId(uid)}, {'$addToSet' : {'intentions' : {'p_id' :  ObjectId(pid), 'dest_id' : ObjectId(dest_id)}}}
+    return {'_id' : ObjectId(uid)}, {'$addToSet' : {'intentions' : {'product_id' : pid, 'dest_id' : dest_id}}}
 
 def del_users_intention_query(uid, pid, dest_id):
     return {'_id' : ObjectId(uid)}, {'$pull' : {'intentions' : {'p_id' : ObjectId(pid), 'dest_id' : ObjectId(dest_id)}}}
