@@ -4,7 +4,6 @@ fm = FakeModelManager()
 
 async def main():
     await fm._create_fake_profiles(20)   
-    await fm._create_fake_products(100)     
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
