@@ -160,12 +160,12 @@ class ModelManager:
             return False
 
         # TODO FIX
-        # selector, update = del_users_intention_query_wo_sponsor(uid, pid)
-        # res = await db.profiles_collection.update_one(selector, update, session=s)
-        # if res is None:
-        #     # await s.abort_transaction()
+        selector, update = del_users_intention_query_wo_sponsor(uid, pid)
+        res = await db[collection].update_one(selector, update, session=s)
+        if res is None:
+            # await s.abort_transaction()
 
-        #     return False
+            return False
 
         return True
 
@@ -314,7 +314,7 @@ def del_users_intention_query(uid, pid, dest_id):
     return {'_id' : ObjectId(uid)}, {'$pull' : {'intentions' : {'product_id' : pid, 'dest_id' : dest_id}}}
 
 def del_users_intention_query_wo_sponsor(uid, pid):
-    return {}, {'$pull' : {'wishes' : {'p_id' : ObjectId(pid), 'dest_id' : ObjectId(uid)}}}
+    return {'intentions' : {'$elemMatch' : {'dest_id' : uid, 'product_id' : pid}}}, {'$pull' : {'intentions' : {'product_id' : pid, 'dest_id' : uid}}}
 
 def del_users_wish_query(uid, pid):
     return {'_id' : ObjectId(uid)}, {'$pull' : {'wishes' : {'product_id' : pid}}}

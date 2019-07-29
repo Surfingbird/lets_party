@@ -141,6 +141,7 @@ async def my_intentions(request):
 
     return web.json_response(intentions)
 
+
 # OK
 async def add_my_intentions(request):
     uid = request['uid']
@@ -162,7 +163,7 @@ async def add_my_intentions(request):
     return web.Response(status=201)
 
 
-# TODO
+# OK
 async def del_my_intentions(request):
     uid = request['uid']
 
@@ -183,6 +184,7 @@ async def del_my_intentions(request):
     return web.Response(text='del_my_intentions!')
 
 
+# OK
 async def users_wishes(request):
     dest_id = request.match_info['dest_id']
 
