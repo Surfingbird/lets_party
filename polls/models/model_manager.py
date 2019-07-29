@@ -170,21 +170,17 @@ class ModelManager:
         return True
 
     async def get_users_wishes(self, uid):
-        res = await self.get_profile(uid)
+        res = await Profile.objects.get(_id=uid)
         if res is None:
             return None
 
         extended_wishes = []
 
         for wish in res['wishes']:
-            str_id = str(wish['p_id'])
-            product = await self.get_product(str_id)
+            product_id = str(wish['product_id'])
+            product = await Product.objects.get(_id=product_id)
             if product is not None:
                 extended =  {**wish, **product}
-                extended['p_id'] = str_id
-                extended['_id'] = str_id
-                extended['sponsor_id'] = uid
-
                 extended_wishes.append(extended)
 
         return extended_wishes

@@ -82,7 +82,7 @@ async def mypage(request):
     return web.json_response(profile)
 
 
-# TO
+# OK
 async def my_wishes(request):
     uid = request['uid']
 
@@ -91,7 +91,7 @@ async def my_wishes(request):
 
     return web.json_response(wishes)
 
-
+# OK
 async def add_my_wishe(request):
     uid = request['uid']
 
@@ -109,7 +109,7 @@ async def add_my_wishe(request):
 
     return web.Response(status=201)
 
-
+#  OK TODO
 async def del_my_wishe(request):
     uid = request['uid']
 
