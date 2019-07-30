@@ -1,5 +1,5 @@
 from aiohttp import web
-import auth
+from polls.main_api_app import auth
 import aiohttp
 
 from polls.models.model_manager import ModelManager 
@@ -17,12 +17,12 @@ async def login(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
     _id = data['id']
     ok = mm.check_user(_id)
     if not ok:
-        return web.Response(status=404)
+        return web.Response(status=web.HTTPNotFound)
 
     response = web.Response()
     token = auth.gen_token(data['id'])
@@ -121,14 +121,14 @@ async def add_my_wishe(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
     pid = data['product_id']
     ok = await mm.add_users_wish(uid, pid)
     if ok is not True:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
-    return web.Response(status=201)
+    return web.Response(status=web.HTTPCreated)
 
 #  OK
 async def del_my_wishe(request):
@@ -139,12 +139,12 @@ async def del_my_wishe(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
     pid = data['product_id']
     ok = await mm.del_users_wish(uid, pid)
     if ok is not True:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
     
     return web.Response()
 
@@ -167,16 +167,16 @@ async def add_my_intentions(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
     pid = data['product_id']
     dest_id = data['dest_id']
 
     ok = await mm.add_users_intention(uid, pid, dest_id)
     if ok is not True:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
-    return web.Response(status=201)
+    return web.Response(status=web.HTTPCreated)
 
 
 # OK
@@ -188,14 +188,14 @@ async def del_my_intentions(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
     pid = data['product_id']
     dest_id = data['dest_id']
 
     ok = await mm.del_users_intention(uid, pid, dest_id)
     if ok is not True:
-        return web.Response(status=400)
+        return web.Response(status=web.HTTPBadRequest)
 
     return web.Response(text='del_my_intentions!')
 
@@ -217,5 +217,7 @@ async def intentions_for_user(request):
 
     return web.json_response(intentions)
 
+async def notifications(request):
+    return web.Response(text="notification")
 
     

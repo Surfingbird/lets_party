@@ -1,6 +1,6 @@
 from aiohttp import web
-from routes import setup_routes
-import auth
+from polls.main_api_app.routes import setup_routes
+from polls.main_api_app import auth
 
 @web.middleware
 async def cors_middleware(request, handler):
@@ -8,9 +8,13 @@ async def cors_middleware(request, handler):
   
     return response
 
-
-if __name__ == "__main__":
+def create_app():
     app = web.Application(middlewares=[cors_middleware, auth.check_token_middleware])
     setup_routes(app)
+
+    return app
+
+if __name__ == "__main__":
+    app = create_app()
 
     web.run_app(app)
