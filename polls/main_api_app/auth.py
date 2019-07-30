@@ -23,7 +23,7 @@ def gen_token(uid):
 async def check_token_middleware(request, handler):
     url = str(request.rel_url)
 
-    if url == login_url and request.method == "GET":
+    if url == login_url and request.method == "POST":
         pass
 
     elif COOKIE_NAME in request.cookies:
