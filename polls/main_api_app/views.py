@@ -90,7 +90,13 @@ async def products_list(request):
         product['_id'] = str(product['_id'])
         products_page.append(product)
 
-    return web.json_response(products_page)
+    total = await Product.objects.count()
+
+    data = {}
+    data['total'] = total
+    data['products'] = products_page
+
+    return web.json_response(data)
 
 # OK
 async def mypage(request):

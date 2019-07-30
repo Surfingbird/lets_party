@@ -61,3 +61,9 @@ class Manage:
 
         collection  = self.model_cls.Meta.collection_name
         await db[collection].delete_many(kwargs)
+
+    async def count(self):
+        collection  = self.model_cls.Meta.collection_name
+        n = await db[collection].count_documents({})
+
+        return n
