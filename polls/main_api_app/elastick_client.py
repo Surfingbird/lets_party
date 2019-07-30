@@ -47,3 +47,20 @@ class ElastickClient:
                 result.append(lite_info)
 
         return result
+
+
+    async def get_products_full(self, pattern):
+        query = {"query": { "match": { "product_name": pattern } }}
+
+        url = self.path + '_search'
+        result = []
+
+        async with self.session.get(url, json=(query)) as resp:
+            data = await resp.json()
+
+            for node in data['hits']['hits']:
+                product = node['_source']
+
+                result.append(product)
+
+        return result

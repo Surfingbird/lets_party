@@ -70,6 +70,14 @@ async def search_products(request):
     return web.json_response(data)
 
 
+async def search_products_result(request):
+    pattern = request.query['pattern']
+    data = await es_client.get_products_full(pattern)
+
+
+    return web.json_response(data)
+
+
 # OK
 async def products_list(request):
     start = request.query['start']

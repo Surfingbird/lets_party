@@ -133,6 +133,27 @@ paths:
             items:
               $ref: "#/definitions/LiteProduct"
 
+  /products/search/result:
+    get:
+      tags:
+      - "products"
+      summary: "Получения товаров подходящих под паттерн поиска (полная информация)"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "pattern"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: ""
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+
 
   /profile/mypage:
     get:
