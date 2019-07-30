@@ -60,6 +60,8 @@ class ElastickClient:
 
             for node in data['hits']['hits']:
                 product = node['_source']
+                _id = product.pop('id')
+                product['_id'] = _id
 
                 result.append(product)
 
