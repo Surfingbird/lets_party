@@ -1,7 +1,7 @@
 import asyncio
 import inspect 
 
-from polls.orm.db import db
+from polls.models.db import db
 from polls.orm.query_set import QuerySet
 from bson.objectid import ObjectId
 

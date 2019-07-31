@@ -6,7 +6,7 @@ from polls.orm.fields import Field, StringField, IntField, ListField
 from polls.orm.query_set import QuerySet
 from polls.orm.manager import Manage
 
-from polls.orm.db import db
+from polls.models.db import db
 
 class Model:
     objects = Manage()

@@ -1,7 +1,6 @@
 import asyncio
 
-from polls.orm.db import db
-from polls.models import api
+from polls.models.db import db
 
 from bson.objectid import ObjectId
 from polls.models.orm_models import Product, Profile

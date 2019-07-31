@@ -2,16 +2,16 @@ import motor.motor_asyncio
 import asyncio
 import aiohttp
 
-# MongoDB
-host = 'localhost'
-port = 27017
-db_name = '12345'
+# MONGODB
+HOST = 'localhost'
+PORT = 27017
+DBNAME = 'kts_orm'
 
-client = motor.motor_asyncio.AsyncIOMotorClient(host, port)
-conn = client[db_name]
+client = None
+db = None
 
-product_collection = conn['products']
-profiles_collection = conn['profiles']
+product_collection = None
+profiles_collection = None
 
 #ES DB
 scheme = "http://"

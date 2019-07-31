@@ -1,6 +1,6 @@
 import motor.motor_asyncio
 
-from polls.orm.db import db
+from polls.models.db import db
 import asyncio
 
 class QuerySet:
