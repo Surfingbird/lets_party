@@ -120,6 +120,8 @@ async def my_wishes(request):
     uid = request['uid']
 
     wishes = await mm.get_users_wishes(uid)
+    for wish in wishes:
+        wish.pop('sponsor_id')
 
 
     return web.json_response(wishes)
@@ -215,8 +217,15 @@ async def del_my_intentions(request):
 # OK
 async def users_wishes(request):
     dest_id = request.match_info['dest_id']
+    my_id = request['uid'] 
 
     wishes = await mm.get_users_wishes(dest_id)
+    for wish in wishes:
+        sponsor_id = wish.pop('sponsor_id')
+        if sponsor_id == my_id:
+            wish['reserved_by_me'] = True
+        else:
+            wish['reserved_by_me'] = False
 
     return web.json_response(wishes)
 

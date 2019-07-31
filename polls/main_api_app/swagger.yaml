@@ -184,7 +184,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/ExtendedWish"
+              $ref: "#/definitions/ExtendedMyWish"
 
     post:
       tags:
@@ -276,7 +276,7 @@ paths:
     get:
       tags:
       - "profile"
-      summary: "Список пожеланий пользователя"
+      summary: "Список пожеланий пользователя, с пометками наших обещаний"
       produces:
       - "application/json"
       parameters:
@@ -408,8 +408,8 @@ definitions:
       reserved:
         type: "boolean"
 
-      sponsor_id:
-        type: "string"
+      reserved_by_me:
+        type: "boolean"
 
       _id:
         type: "string"
@@ -431,6 +431,38 @@ definitions:
       product_url:
         type: "string"
         format: "URL"
+
+
+  ExtendedMyWish:
+    type: "object"
+    properties:
+      product_id:
+        type: "string"
+
+      reserved:
+        type: "boolean"
+
+      _id:
+        type: "string"
+
+      product_name:
+        type: "string"
+
+      discription:
+        type: "string"
+
+      price:
+        type: "number"
+        format: "float32"
+        
+      img_url:
+        type: "string"
+        format: "URL"
+
+      product_url:
+        type: "string"
+        format: "URL"
+        
 
   ExtendedIntention:
     type: "object"
