@@ -17,11 +17,7 @@ class FakeModelManager:
 
 
     async def _create_fake_profile(self):
-        profile = Profile(vk_id=random.randint(self.min_price, self.max_price),
-                first_name = fake.name(),
-                last_name = fake.name(),
-                photo_url = fake.url()
-            )
+        profile = Profile(vk_id=random.randint(self.min_price, self.max_price))
 
         await profile.save()
 

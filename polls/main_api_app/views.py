@@ -31,14 +31,16 @@ async def login(request):
 
     vk_id = int(query_params['vk_user_id'])
     prof = await Profile.objects.get(vk_id=vk_id)
+
+    payload = {}
+    payload['vk_id'] = vk_id
+
     if prof is None:
         prof = Profile(vk_id=vk_id)
         await prof.save()
-
-    _id = prof['_id']
-    payload = {}
-    payload['_id'] = _id
-    payload['vk_id'] = vk_id
+        payload['_id'] = prof._id
+    else:
+        payload['_id'] = prof['_id']
 
     response = web.Response()
     token = auth.gen_token(payload)
@@ -74,7 +76,7 @@ async def product(request):
 
         return web.json_response(product)
     else:
-        return web.Response(text="404")  
+        return web.Response(status="404")  
 
 
 # OK
@@ -119,6 +121,9 @@ async def mypage(request):
     uid = request['uid']
 
     profile = await Profile.objects.get(_id=uid)
+    if profile is None:
+        return web.Response(status=404)
+
     # TODO убрать
     for wish in profile['wishes']:
         wish['product_id'] = str(wish['product_id'])
@@ -136,8 +141,12 @@ async def my_wishes(request):
     uid = request['uid']
 
     wishes = await mm.get_users_wishes(uid)
+    if wishes is None:
+        return web.Response(status=404)
+
     for wish in wishes:
-        wish.pop('sponsor_id')
+        if 'sponsor_id' in wish:
+            wish.pop('sponsor_id')
 
 
     return web.json_response(wishes)
@@ -184,6 +193,8 @@ async def my_intentions(request):
     uid = request['uid']
 
     intentions = await mm.get_users_intentions(uid)
+    if intentions is None:
+        return web.Response(status=404)
 
     return web.json_response(intentions)
 
@@ -236,6 +247,9 @@ async def users_wishes(request):
     my_id = request['uid'] 
 
     wishes = await mm.get_users_wishes(dest_id)
+    if wishes is None:
+        return web.Response(status=404)
+
     for wish in wishes:
         sponsor_id = wish.pop('sponsor_id')
         if sponsor_id == my_id:
@@ -251,6 +265,8 @@ async def intentions_for_user(request):
     uid = request['uid']
 
     intentions = await mm.intentions_for_user(uid, dest_id)
+    if intentions is None:
+        return web.Response(status=404)
 
     return web.json_response(intentions)
 
