@@ -21,13 +21,13 @@ async def login(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     url = data['url']
     query_params = dict(parse_qsl(urlparse(url).query, keep_blank_values=True))
     ok = is_valid(query=query_params, secret=APP_SECRET)
     if not ok:
-       return web.Response(status=web.HTTPForbidden)
+       return web.Response(status=401)
 
     vk_id = int(query_params['vk_user_id'])
     prof = await Profile.objects.get(vk_id=vk_id)
@@ -160,12 +160,12 @@ async def add_my_wishe(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     pid = data['product_id']
     ok = await mm.add_users_wish(uid, pid)
     if ok is not True:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     return web.Response(status=web.HTTPCreated)
 
@@ -178,12 +178,12 @@ async def del_my_wishe(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     pid = data['product_id']
     ok = await mm.del_users_wish(uid, pid)
     if ok is not True:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
     
     return web.Response()
 
@@ -208,14 +208,14 @@ async def add_my_intentions(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     pid = data['product_id']
     dest_id = data['dest_id']
 
     ok = await mm.add_users_intention(uid, pid, dest_id)
     if ok is not True:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     return web.Response(status=web.HTTPCreated)
 
@@ -229,14 +229,14 @@ async def del_my_intentions(request):
     try:
         data = await request.json()
     except ValueError:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     pid = data['product_id']
     dest_id = data['dest_id']
 
     ok = await mm.del_users_intention(uid, pid, dest_id)
     if ok is not True:
-        return web.Response(status=web.HTTPBadRequest)
+        return web.Response(status=400)
 
     return web.Response(text='del_my_intentions!')
 
