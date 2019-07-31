@@ -1,7 +1,7 @@
 import asyncio
 import inspect 
 
-from polls.orm.db import db
+from polls.models.db import db, print_status, get_mongo_conn
 from polls.orm.query_set import QuerySet
 from bson.objectid import ObjectId
 
@@ -35,8 +35,9 @@ class Manage:
             else:
                 selector[key] = value
 
+        db = get_mongo_conn()
         data = await db[collection].find_one(selector)
-        if not(data is None):
+        if data is not None:
             data['_id'] = str(data['_id'])
 
         return data
@@ -52,6 +53,8 @@ class Manage:
             self.model_cls.__dict__[key].validate(value)
 
         collection  = self.model_cls.Meta.collection_name
+        db = get_mongo_conn()
+
         await db[collection].update_many({}, { '$set' : kwargs})
 
 
@@ -60,10 +63,14 @@ class Manage:
             self.model_cls.__dict__[key].validate(value)
 
         collection  = self.model_cls.Meta.collection_name
+        db = get_mongo_conn()
+
         await db[collection].delete_many(kwargs)
 
     async def count(self):
         collection  = self.model_cls.Meta.collection_name
+        db = get_mongo_conn()
+
         n = await db[collection].count_documents({})
 
         return n

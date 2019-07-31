@@ -3,15 +3,32 @@ import asyncio
 import aiohttp
 
 # MongoDB
-host = 'localhost'
-port = 27017
-db_name = '12345'
+HOST = 'localhost'
+PORT = 27017
+DBNAME = 'kts'
 
-client = motor.motor_asyncio.AsyncIOMotorClient(host, port)
-conn = client[db_name]
+client = None
+db = None
 
-product_collection = conn['products']
-profiles_collection = conn['profiles']
+def init_mongodb(host=HOST, port=PORT, dbname=DBNAME, loop=None):
+    global client
+    global db
+
+    if loop is not None:
+        client = motor.motor_asyncio.AsyncIOMotorClient(host, port, io_loop=loop)
+    else:
+        client = motor.motor_asyncio.AsyncIOMotorClient(host, port)
+
+    db = client[dbname]
+
+def print_status():
+    print(type(client), client)
+    print(type(db), db)
+
+def get_mongo_conn():
+    global db
+
+    return db
 
 #ES DB
 scheme = "http://"

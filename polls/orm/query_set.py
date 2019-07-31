@@ -1,7 +1,7 @@
+import asyncio
 import motor.motor_asyncio
 
-from polls.orm.db import db
-import asyncio
+from polls.models.db import db, print_status, get_mongo_conn
 
 class QuerySet:
     def __init__(self, selector, collection):
@@ -45,6 +45,8 @@ class QuerySet:
             raise TypeError
 
     async def __aiter__(self):
+        db = get_mongo_conn()
+        
         self.data = await db[self.collection].find(self.selector).skip(self.qs_offset).to_list(length=self.qs_limit)
         self.length = len(self.data)
         self.i = 0
