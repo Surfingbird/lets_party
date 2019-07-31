@@ -1,11 +1,15 @@
 from aiohttp import web
 from polls.main_api_app import auth
 import aiohttp
+from urllib.parse import urlparse, parse_qsl
 
 from polls.models.model_manager import ModelManager 
 from polls.main_api_app.settings import COOKIE_NAME
 from polls.models.orm_models import Product, Profile
 from polls.main_api_app.elastick_client import ElastickClient
+
+from polls.main_api_app.auth import is_valid
+from polls.main_api_app.settings import APP_SECRET
 
 mm = ModelManager()
 es_client = ElastickClient()
@@ -19,13 +23,25 @@ async def login(request):
     except ValueError:
         return web.Response(status=web.HTTPBadRequest)
 
-    _id = data['id']
-    ok = mm.check_user(_id)
+    url = data['url']
+    query_params = dict(parse_qsl(urlparse(url).query, keep_blank_values=True))
+    ok = is_valid(query=query_params, secret=APP_SECRET)
     if not ok:
-        return web.Response(status=web.HTTPNotFound)
+       return web.Response(status=web.HTTPForbidden)
+
+    vk_id = int(query_params['vk_user_id'])
+    prof = await Profile.objects.get(vk_id=vk_id)
+    if prof is None:
+        prof = Profile(vk_id=vk_id)
+        await prof.save()
+
+    _id = prof['_id']
+    payload = {}
+    payload['_id'] = _id
+    payload['vk_id'] = vk_id
 
     response = web.Response()
-    token = auth.gen_token(data['id'])
+    token = auth.gen_token(payload)
     response.set_cookie(name=COOKIE_NAME, value=token)
 
     return response
