@@ -211,7 +211,13 @@ async def add_my_intentions(request):
         return web.Response(status=400)
 
     pid = data['product_id']
-    dest_id = data['dest_id']
+    dest_vk_id = data['dest_id']
+
+    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
+    if dest_prof is None:
+        return web.Response(status=400)
+
+    dest_id = dest_prof['_id']
 
     ok = await mm.add_users_intention(uid, pid, dest_id)
     if ok is not True:
@@ -232,7 +238,13 @@ async def del_my_intentions(request):
         return web.Response(status=400)
 
     pid = data['product_id']
-    dest_id = data['dest_id']
+    dest_vk_id = data['dest_id']
+
+    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
+    if dest_prof is None:
+        return web.Response(status=400)
+
+    dest_id = dest_prof['_id']
 
     ok = await mm.del_users_intention(uid, pid, dest_id)
     if ok is not True:
@@ -243,7 +255,13 @@ async def del_my_intentions(request):
 
 # OK
 async def users_wishes(request):
-    dest_id = request.match_info['dest_id']
+    dest_vk_id = request.match_info['dest_id']
+    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
+    if dest_prof is None:
+        return web.Response(status=404)
+
+    dest_id = dest_prof['_id']
+
     my_id = request['uid'] 
 
     wishes = await mm.get_users_wishes(dest_id)
@@ -261,7 +279,13 @@ async def users_wishes(request):
 
 # OK
 async def intentions_for_user(request):
-    dest_id = request.match_info['dest_id']
+    dest_vk_id = request.match_info['dest_id']
+    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
+    if dest_prof is None:
+        return web.Response(status=404)
+
+    dest_id = dest_prof['_id']
+
     uid = request['uid']
 
     intentions = await mm.intentions_for_user(uid, dest_id)
