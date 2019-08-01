@@ -188,15 +188,19 @@ async def add_my_wishe(request):
 
     try:
         data = await request.json()
-    except ValueError:
+        pid = data['product_id']
+        ok = await mm.add_users_wish(uid, pid)
+
+        if ok is not True:
+            raise LookupError
+        
+    except (ValueError, bson.errors.InvalidId):
         return web.Response(status=400)
 
-    pid = data['product_id']
-    ok = await mm.add_users_wish(uid, pid)
-    if ok is not True:
-        return web.Response(status=400)
+    except LookupError:
+        return web.Response(status=404)
 
-    return web.Response(status=web.HTTPCreated)
+    return web.Response(status=201)
 
 #  OK
 async def del_my_wishe(request):

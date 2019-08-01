@@ -209,7 +209,11 @@ paths:
         
       responses:
         201:
-          description: ""
+          description: "Пожелание успешно добавлено"
+        400:
+          description: "Некорректные данные"
+        404:
+          description: "Такого продукта нет"
 
     delete:
       tags:

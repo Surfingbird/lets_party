@@ -75,11 +75,7 @@ intention_t = t.Dict({
 
 profile_t = t.Dict({
     t.Key('_id'): ObjectId,
-    t.Key('uid'): t.Int(),
-    t.Key('first_name'): t.String(),
-    t.Key('last_name'): t.String(),
-    t.Key('photo_url'): t.String(),
+    t.Key('vk_id'): t.Int(),
     t.Key('wishes'): t.List(wish_t),
     t.Key('intentions'): t.List(intention_t)
 })
-profile_t.make_optional('_id')
