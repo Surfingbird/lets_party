@@ -36,3 +36,46 @@ def gen_vk_url(vk_id, secret):
     url = path + qstr
 
     return url
+
+
+import trafaret as t
+from bson.objectid import ObjectId
+
+product_t = t.Dict({
+    t.Key('_id'): ObjectId,
+    t.Key('product_name'): t.String(),
+    t.Key('discription'): t.String(),
+    t.Key('price'): t.Float(),
+    t.Key('img_url'): t.String(),
+    t.Key('product_url'): t.String()
+})
+
+products_pagination_t = t.Dict({
+    t.Key('total'): t.Int,
+    t.Key('products'): t.List(product_t)
+})
+
+
+wish_t = t.Dict({
+    t.Key('p_id'): t.String(),
+    t.Key('sponsor_id'): t.String(),
+    t.Key('reserved'): t.Bool()
+})
+wish_t.make_optional('sponsor_id')
+
+intention_t = t.Dict({
+    t.Key('p_id'): t.String(),
+    t.Key('dest_id'): t.String(),
+})
+
+# TODO проверить, можно ли так делать
+profile_t = t.Dict({
+    t.Key('_id'): ObjectId,
+    t.Key('uid'): t.Int(),
+    t.Key('first_name'): t.String(),
+    t.Key('last_name'): t.String(),
+    t.Key('photo_url'): t.String(),
+    t.Key('wishes'): t.List(wish_t),
+    t.Key('intentions'): t.List(intention_t)
+})
+profile_t.make_optional('_id')

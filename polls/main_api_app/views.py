@@ -98,10 +98,19 @@ async def search_products_result(request):
 
 # OK
 async def products_list(request):
-    start = request.query['start']
-    limit = request.query['limit']
+    start = 0
+    limit = 0
 
-    # TODO check valid value
+    try:
+        start = int(request.query['start'])
+        limit = int(request.query['limit'])
+
+        if start < 0 or limit < 0:
+            raise ValueError
+    except (KeyError, ValueError):
+        return web.Response(status="400") 
+    
+
     queryset = Product.objects.filter().offset(start).limit(limit)
 
     products_page = []

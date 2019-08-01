@@ -3,7 +3,7 @@ import pytest
 import random
 import http
 
-from tests.sub_functions import gen_vk_url
+from tests.sub_functions import *
 from polls.main_api_app.settings import APP_SECRET, COOKIE_NAME
 
 async def test_auth_success(cli):
@@ -48,11 +48,51 @@ async def test_unauth_success(cli):
 
 async def test_get_products(cli, new_product, valid_cookie):
     respose = await cli.get('/products', cookies=valid_cookie)
+    assert respose.status == 200
 
     data = await respose.json()
 
     assert type(data) == list
     for item in data:
-        print(item)
+        product_t.check(item)
 
     assert respose.status == 200
+
+async def test_get_products_invalid_query1(cli, valid_cookie, new_10_products):
+    respose = await cli.get('/products/list', cookies=valid_cookie)
+    assert respose.status == 400
+
+async def test_get_products_invalid_query2(cli, valid_cookie, new_10_products):
+    params = {
+        'start': 1,
+        'limit': 'aaasas'
+    }
+    respose = await cli.get('/products/list', cookies=valid_cookie, params=params)
+    assert respose.status == 400
+
+async def test_get_products_invalid_query3(cli, valid_cookie, new_10_products):
+    params = {
+        'start': -1,
+        'limit': -1
+    }
+    respose = await cli.get('/products/list', cookies=valid_cookie, params=params)
+    assert respose.status == 400
+
+async def test_get_products_with_params(cli, valid_cookie, new_10_products):
+    limit = 10
+    start = 0
+
+    params = {
+        'start': start,
+        'limit': limit
+    }
+    respose = await cli.get('/products/list', cookies=valid_cookie, params=params)
+    data = await respose.json()
+
+    assert products_pagination_t.check(data)
+
+    assert len(data['products']) == limit
+
+
+
+
