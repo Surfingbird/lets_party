@@ -15,12 +15,14 @@ mm = ModelManager()
 es_client = ElastickClient()
 es_client.connect()
 
-# OK
 async def login(request):
     data = {}
     try:
         data = await request.json()
     except ValueError:
+        return web.Response(status=400)
+
+    if 'url' not in data:
         return web.Response(status=400)
 
     url = data['url']

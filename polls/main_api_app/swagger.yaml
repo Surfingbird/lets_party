@@ -20,20 +20,23 @@ schemes:
 
 paths:
   /auth:
-    get:
+    post:
       tags:
       - "auth"
       consumes:
       - "application/json"
       parameters:
-      - name: "id"
-        in: "body"
+      - in: "body"
+        name: "body"
         required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/URL"
         
       responses:
         200:
           description: "Успешно авторизовались"
+        401:
+          description: "Невалидные данные авторизации"
 
     delete:
       tags:
@@ -498,4 +501,10 @@ definitions:
     type: "object"
     properties:
       product_id:
+        type: "string"
+
+  URL:
+    type: "object"
+    properties:
+      url:
         type: "string"

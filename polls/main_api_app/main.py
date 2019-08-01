@@ -10,7 +10,7 @@ async def cors_middleware(request, handler):
     return response
 
 def create_app(loop=None, dbname=DBNAME):
-    app = web.Application(middlewares=[cors_middleware, auth.check_token_middleware], loop=loop)
+    app = web.Application(middlewares=[auth.check_token_middleware], loop=loop)
     setup_routes(app)
 
     init_mongodb(loop=loop, dbname=dbname)
