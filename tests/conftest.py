@@ -36,7 +36,7 @@ async def cli(aiohttp_client, app):
 @pytest.fixture
 async def new_product(event_loop, app):
     product = await fm._create_fake_product()
-    yield
+    yield product
     await product.delete()
 
 @pytest.fixture

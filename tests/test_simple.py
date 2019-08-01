@@ -94,5 +94,23 @@ async def test_get_products_with_params(cli, valid_cookie, new_10_products):
     assert len(data['products']) == limit
 
 
+async def test_get_this_product_success(cli, valid_cookie, new_product):
+    respose = await cli.get('/products/' + new_product._id, cookies=valid_cookie)
+    assert respose.status == 200
+
+    data = await respose.json()
+    assert product_t.check(data)
+
+async def test_get_this_product_bad_id(cli, valid_cookie):
+    respose = await cli.get('/products/' + 'there_is_no_this_product', cookies=valid_cookie)
+    assert respose.status == 400
+
+async def test_get_this_product_not_found(cli, valid_cookie):
+    product_id = '5d4293c8de3d25bdbda34c54'
+
+    respose = await cli.get('/products/' + product_id, cookies=valid_cookie)
+    assert respose.status == 404
+
+
 
 

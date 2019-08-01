@@ -1,3 +1,4 @@
+import bson
 from aiohttp import web
 from polls.main_api_app import auth
 import aiohttp
@@ -72,7 +73,12 @@ async def new_products(request):
 async def product(request):
     product_id = request.match_info['id']
 
-    product = await Product.objects.get(_id=product_id)
+    product = None
+    try:
+        product = await Product.objects.get(_id=product_id)
+    except bson.errors.InvalidId:
+        return web.Response(status="400")  
+
     if product is not None:
         product['_id'] = str(product['_id'])
 

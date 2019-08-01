@@ -117,6 +117,8 @@ paths:
             $ref: "#/definitions/Product"
         400:
           description: "некорректный запрос"
+        404:
+          description: "такого товара нет"
 
   /products/search:
     get:
