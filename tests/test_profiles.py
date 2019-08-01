@@ -24,8 +24,18 @@ async def test_get_my_wishes_simple(cli, valid_cookie):
     data = await response.json()
     assert len(data) == 0 and type(data) == list
 
-# TODO
-# test_get_my_wishes_with_wish
+async def test_get_my_wishes_with_wish(cli, valid_cookie, new_product_mongo):
+    await cli.post('/profile/mypage/wishes', cookies=valid_cookie, json={
+        'product_id' : new_product_mongo._id})
+
+    response = await cli.get('/profile/mypage/wishes', cookies=valid_cookie)
+    assert response.status == 200
+
+    data = await response.json()
+    assert len(data) == 1
+
+    extended_wish_t.check(data[0])
+
 
 async def test_add_wish_success(cli, valid_cookie, new_product_mongo):
     response = await cli.post('/profile/mypage/wishes', cookies=valid_cookie, json={

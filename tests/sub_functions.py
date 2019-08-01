@@ -60,13 +60,22 @@ products_pagination_t = t.Dict({
     t.Key('products'): t.List(product_t)
 })
 
-
 wish_t = t.Dict({
-    t.Key('p_id'): t.String(),
-    t.Key('sponsor_id'): t.String(),
-    t.Key('reserved'): t.Bool()
+    t.Key('product_id'): t.String(),
+    t.Key('reserved'): t.Bool(),
 })
-wish_t.make_optional('sponsor_id')
+
+extended_wish_t = t.Dict({
+    t.Key('_id'): ObjectId,
+    t.Key('product_id'): t.String(),
+    t.Key('reserved'): t.Bool(),
+    t.Key('product_name'): t.String(),
+    t.Key('discription'): t.String(),
+    t.Key('price'): t.Float(),
+    t.Key('img_url'): t.String(),
+    t.Key('product_url'): t.String()
+})
+
 
 intention_t = t.Dict({
     t.Key('p_id'): t.String(),
