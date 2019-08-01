@@ -46,7 +46,7 @@ async def test_unauth_success(cli):
     assert respose.status == 200
 
 
-async def test_get_products(cli, new_product, valid_cookie):
+async def test_get_products(cli, new_product_mongo, valid_cookie):
     respose = await cli.get('/products', cookies=valid_cookie)
     assert respose.status == 200
 
@@ -58,11 +58,11 @@ async def test_get_products(cli, new_product, valid_cookie):
 
     assert respose.status == 200
 
-async def test_get_products_invalid_query1(cli, valid_cookie, new_10_products):
+async def test_get_products_invalid_query1(cli, valid_cookie, new_10_products_mongo):
     respose = await cli.get('/products/list', cookies=valid_cookie)
     assert respose.status == 400
 
-async def test_get_products_invalid_query2(cli, valid_cookie, new_10_products):
+async def test_get_products_invalid_query2(cli, valid_cookie, new_10_products_mongo):
     params = {
         'start': 1,
         'limit': 'aaasas'
@@ -70,7 +70,7 @@ async def test_get_products_invalid_query2(cli, valid_cookie, new_10_products):
     respose = await cli.get('/products/list', cookies=valid_cookie, params=params)
     assert respose.status == 400
 
-async def test_get_products_invalid_query3(cli, valid_cookie, new_10_products):
+async def test_get_products_invalid_query3(cli, valid_cookie, new_10_products_mongo):
     params = {
         'start': -1,
         'limit': -1
@@ -78,7 +78,7 @@ async def test_get_products_invalid_query3(cli, valid_cookie, new_10_products):
     respose = await cli.get('/products/list', cookies=valid_cookie, params=params)
     assert respose.status == 400
 
-async def test_get_products_with_params(cli, valid_cookie, new_10_products):
+async def test_get_products_with_params(cli, valid_cookie, new_10_products_mongo):
     limit = 10
     start = 0
 
@@ -94,8 +94,8 @@ async def test_get_products_with_params(cli, valid_cookie, new_10_products):
     assert len(data['products']) == limit
 
 
-async def test_get_this_product_success(cli, valid_cookie, new_product):
-    respose = await cli.get('/products/' + new_product._id, cookies=valid_cookie)
+async def test_get_this_product_success(cli, valid_cookie, new_product_mongo):
+    respose = await cli.get('/products/' + new_product_mongo._id, cookies=valid_cookie)
     assert respose.status == 200
 
     data = await respose.json()

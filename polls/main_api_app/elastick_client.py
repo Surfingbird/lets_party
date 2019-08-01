@@ -5,14 +5,14 @@ import json
 from polls.models.fake_model_manager import FakeModelManager
 
 class ElastickClient:
-    path = 'http://0.0.0.0:9200/products/product/'
-
-    def __init__(self):
+    def __init__(self, loop=None, path='http://0.0.0.0:9200/products/product/'):
         self.session = None
         self.last_insert_id = 100
+        self.loop = loop
+        self.path = path
 
     def connect(self):
-          self.session = aiohttp.ClientSession()
+          self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def disconnect(self):
         await self.session.close()

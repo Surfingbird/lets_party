@@ -10,11 +10,17 @@ from polls.models.orm_models import Product, Profile
 from polls.main_api_app.elastick_client import ElastickClient
 
 from polls.main_api_app.auth import is_valid
-from polls.main_api_app.settings import APP_SECRET
+from polls.main_api_app.settings import APP_SECRET, ES_PATH
 
 mm = ModelManager()
-es_client = ElastickClient()
-es_client.connect()
+es_client = None
+
+def init_es_connect(loop=None, path=ES_PATH):
+    global es_client
+
+    es_client = ElastickClient(loop, path)
+    es_client.connect()
+
 
 async def login(request):
     data = {}

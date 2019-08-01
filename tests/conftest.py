@@ -26,7 +26,9 @@ def event_loop(loop):
 
 @pytest.fixture(scope='session')
 def app(event_loop):
-    yield create_app(loop=event_loop, dbname=TESTDATABASE)
+    es_path = 'http://0.0.0.0:9200/test/product/'
+
+    yield create_app(loop=event_loop, dbname=TESTDATABASE, es_path=es_path)
 
 @pytest.fixture
 async def cli(aiohttp_client, app):
@@ -34,13 +36,13 @@ async def cli(aiohttp_client, app):
     yield client
 
 @pytest.fixture
-async def new_product(event_loop, app):
+async def new_product_mongo(event_loop, app):
     product = await fm._create_fake_product()
     yield product
     await product.delete()
 
 @pytest.fixture
-async def new_10_products(event_loop, app):
+async def new_10_products_mongo(event_loop, app):
     _ids = []
     for _ in range(10):
         product = await fm._create_fake_product()
