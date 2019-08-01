@@ -1,7 +1,7 @@
 import jwt
 from aiohttp import web
 
-from polls.main_api_app.settings import COOKIE_NAME, MAGIC_WORD
+from polls.main_api_app.settings import COOKIE_NAME, MAGIC_WORD, APP_SECRET
 
 login_url = "/auth"
 
@@ -51,10 +51,12 @@ from hmac import HMAC
 from urllib.parse import urlparse, parse_qsl, urlencode
 from polls.main_api_app.settings import APP_SECRET
 
-
 def is_valid(*, query: dict, secret: str) -> bool:
     """Check VK Apps signature"""
     vk_subset = OrderedDict(sorted(x for x in query.items() if x[0][:3] == "vk_"))
+
     hash_code = b64encode(HMAC(secret.encode(), urlencode(vk_subset, doseq=True).encode(), sha256).digest())
     decoded_hash_code = hash_code.decode('utf-8')[:-1].replace('+', '-').replace('/', '_')
     return query["sign"] == decoded_hash_code
+
+

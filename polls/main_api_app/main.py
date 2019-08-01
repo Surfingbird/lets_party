@@ -1,7 +1,7 @@
 from aiohttp import web
 from polls.main_api_app.routes import setup_routes
 from polls.main_api_app import auth
-from polls.models.db import init_mongodb, print_status
+from polls.models.db import init_mongodb, DBNAME
 
 @web.middleware
 async def cors_middleware(request, handler):
@@ -9,13 +9,11 @@ async def cors_middleware(request, handler):
   
     return response
 
-def create_app(loop=None):
+def create_app(loop=None, dbname=DBNAME):
     app = web.Application(middlewares=[cors_middleware, auth.check_token_middleware], loop=loop)
     setup_routes(app)
 
-    print_status()
-    init_mongodb(loop=loop)
-    print_status()
+    init_mongodb(loop=loop, dbname=dbname)
 
     return app
 

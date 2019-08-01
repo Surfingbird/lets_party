@@ -1,6 +1,6 @@
 import asyncio
 
-from polls.models.db import db, print_status, get_mongo_conn
+from polls.models.db import db, get_mongo_conn
 
 from bson.objectid import ObjectId
 from polls.models.orm_models import Product, Profile

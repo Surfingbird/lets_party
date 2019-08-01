@@ -1,7 +1,7 @@
 import asyncio
 import motor.motor_asyncio
 
-from polls.models.db import db, print_status, get_mongo_conn
+from polls.models.db import db, get_mongo_conn
 
 class QuerySet:
     def __init__(self, selector, collection):

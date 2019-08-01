@@ -21,9 +21,6 @@ def init_mongodb(host=HOST, port=PORT, dbname=DBNAME, loop=None):
 
     db = client[dbname]
 
-def print_status():
-    print(type(client), client)
-    print(type(db), db)
 
 def get_mongo_conn():
     global db

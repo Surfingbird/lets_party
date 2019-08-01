@@ -1,7 +1,7 @@
 import asyncio
 import inspect 
 
-from polls.models.db import db, print_status, get_mongo_conn
+from polls.models.db import db, get_mongo_conn
 from polls.orm.query_set import QuerySet
 from bson.objectid import ObjectId
 
