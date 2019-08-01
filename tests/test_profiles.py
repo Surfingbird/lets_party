@@ -58,3 +58,22 @@ async def test_add_wish_not_found(cli, valid_cookie):
         'product_id' : product_id})
     assert response.status == 404
 
+async def test_del_wish_success(cli, new_profile_cookie_and_wish_id):
+    cookie, product_id = new_profile_cookie_and_wish_id
+
+    response = await cli.delete('/profile/mypage/wishes', cookies=cookie, json={
+        'product_id' : product_id})
+
+    assert response.status == 200
+
+    response = await cli.get('/profile/mypage/wishes', cookies=cookie)
+    data = await response.json()
+
+    assert len(data) == 0
+
+
+
+
+
+
+

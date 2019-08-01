@@ -87,5 +87,12 @@ async def new_product_in_app(event_loop, app):
     await product.delete()
     # TODO удалять продукты из es
 
+@pytest.fixture
+async def new_profile_cookie_and_wish_id(event_loop, app, cli, valid_cookie, new_product_mongo):
+    await cli.post('/profile/mypage/wishes', cookies=valid_cookie, json={
+        'product_id' : new_product_mongo._id})
+
+    yield valid_cookie, new_product_mongo._id
+
 
 
