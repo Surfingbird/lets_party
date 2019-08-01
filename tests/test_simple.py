@@ -112,10 +112,44 @@ async def test_get_this_product_not_found(cli, valid_cookie):
     assert respose.status == 404
 
 
-async def test_get_products_with_patter_bad_data(cli, valid_cookie):
+async def test_get_products_with_pattern_bad_data(cli, valid_cookie):
     respose = await cli.get('/products/search', cookies=valid_cookie)
     assert respose.status == 400
 
+async def test_get_products_with_pattern_success(cli, valid_cookie, new_product_in_app):
+    respose = await cli.get('/products/search', cookies=valid_cookie, params={'pattern':new_product_in_app})
+    assert respose.status == 200
 
+    data = await respose.json()
+    assert type(data) == list
+
+    for item in data:
+        lite_product_t.check(item)
+
+async def test_get_products_with_pattern_fail(cli, valid_cookie, new_product_in_app):
+    respose = await cli.get('/products/search', cookies=valid_cookie, params={'pattern':new_product_in_app[::-1]})
+    assert respose.status == 200
+
+    data = await respose.json()
+    assert type(data) == list
+    assert len(data) == 0
+
+async def test_get_products_full_with_pattern_success(cli, valid_cookie, new_product_in_app):
+    respose = await cli.get('/products/search/result', cookies=valid_cookie, params={'pattern':new_product_in_app})
+    assert respose.status == 200
+
+    data = await respose.json()
+    assert type(data) == list
+
+    for item in data:
+        product_t.check(item)
+
+async def test_get_products_full_with_pattern_fail(cli, valid_cookie, new_product_in_app):
+    respose = await cli.get('/products/search/result', cookies=valid_cookie, params={'pattern':new_product_in_app[::-1]})
+    assert respose.status == 200
+
+    data = await respose.json()
+    assert type(data) == list
+    assert len(data) == 0
 
 

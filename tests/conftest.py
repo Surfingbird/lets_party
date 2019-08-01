@@ -12,6 +12,9 @@ from polls.models.db import client
 from tests.sub_functions import gen_vk_url
 from polls.main_api_app.settings import APP_SECRET, COOKIE_NAME
 
+from polls.main_api_app.elastick_client import ElastickClient
+test_es_path = 'http://0.0.0.0:9200/test/product/'
+
 TESTDATABASE = 'test_database'
 fm = FakeModelManager()
 
@@ -26,9 +29,9 @@ def event_loop(loop):
 
 @pytest.fixture(scope='session')
 def app(event_loop):
-    es_path = 'http://0.0.0.0:9200/test/product/'
+    global test_es_path
 
-    yield create_app(loop=event_loop, dbname=TESTDATABASE, es_path=es_path)
+    yield create_app(loop=event_loop, dbname=TESTDATABASE, es_path=test_es_path)
 
 @pytest.fixture
 async def cli(aiohttp_client, app):
@@ -65,4 +68,24 @@ async def valid_cookie(event_loop, app, cli):
     yield cookie_data
 
     await Profile.objects.delete(vk_id=vk_id)
+
+@pytest.fixture
+async def new_product_in_app(event_loop, app):
+    pattern = 'pattern'
+
+    es_client = ElastickClient(path=test_es_path, loop=event_loop)
+    es_client.connect()
+
+    product = await fm._create_fake_product()
+    product.product_name =  product.product_name + " " + pattern
+    await product.save()
+
+    await es_client.add_product(product)
+
+    yield pattern
+
+    await product.delete()
+    # TODO удалять продукты из es
+
+
 

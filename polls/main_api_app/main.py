@@ -16,7 +16,7 @@ def create_app(loop=None, dbname=DBNAME, es_path=ES_PATH):
     setup_routes(app)
 
     init_mongodb(loop=loop, dbname=dbname)
-    init_es_connect(loop, path=ES_PATH)
+    init_es_connect(loop, path=es_path)
 
     return app
 

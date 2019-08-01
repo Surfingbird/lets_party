@@ -50,6 +50,11 @@ product_t = t.Dict({
     t.Key('product_url'): t.String()
 })
 
+lite_product_t = t.Dict({
+    t.Key('_id'): ObjectId,
+    t.Key('product_name'): t.String(),
+})
+
 products_pagination_t = t.Dict({
     t.Key('total'): t.Int,
     t.Key('products'): t.List(product_t)
@@ -68,7 +73,6 @@ intention_t = t.Dict({
     t.Key('dest_id'): t.String(),
 })
 
-# TODO проверить, можно ли так делать
 profile_t = t.Dict({
     t.Key('_id'): ObjectId,
     t.Key('uid'): t.Int(),

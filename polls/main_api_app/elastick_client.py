@@ -20,13 +20,14 @@ class ElastickClient:
     async def add_product(self, product):
         data =  product.__dict__.copy()
         _id = data.pop('_id')
+        data.pop('changed')
         data['id'] = _id
 
         self.last_insert_id += 1
         url = self.path + str(self.last_insert_id) + '?pretty'
 
         async with self.session.put(url, json=(data)) as resp:
-            pass
+            pass 
 
     async def get_products(self, pattern):
         query = {"query": { "match": { "product_name": pattern } }}
