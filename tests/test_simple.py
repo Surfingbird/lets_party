@@ -112,5 +112,10 @@ async def test_get_this_product_not_found(cli, valid_cookie):
     assert respose.status == 404
 
 
+async def test_get_products_with_patter_bad_data(cli, valid_cookie):
+    respose = await cli.get('/products/search', cookies=valid_cookie)
+    assert respose.status == 400
+
+
 
 

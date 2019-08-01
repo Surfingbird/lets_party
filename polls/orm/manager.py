@@ -1,9 +1,11 @@
 import asyncio
 import inspect 
 
+import bson
 from polls.models.db import db, get_mongo_conn
 from polls.orm.query_set import QuerySet
 from bson.objectid import ObjectId
+
 
 class Manage:
     def __init__(self):
@@ -30,7 +32,10 @@ class Manage:
             self.model_cls.__dict__[key].validate(value)
             
             if key == '_id':
-                selector[key] = ObjectId(value)
+                try:
+                    selector[key] = ObjectId(value)
+                except bson.errors.InvalidId:
+                    raise
 
             else:
                 selector[key] = value

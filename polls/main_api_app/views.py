@@ -89,10 +89,16 @@ async def product(request):
 
 # OK
 async def search_products(request):
-    pattern = request.query['pattern']
+    pattern = None
+
+    try:
+        pattern = request.query['pattern']
+    except KeyError:
+        return web.Response(status="400") 
+
     data = await es_client.get_products(pattern)
 
-    return web.json_response(data)
+    return web.json_response(data)  
 
 
 async def search_products_result(request):
