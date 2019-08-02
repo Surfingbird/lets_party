@@ -91,6 +91,53 @@ async def test_del_wish_invalid_no_data(cli, valid_cookie, new_product_mongo):
 
     assert response.status == 400
 
+async def test_get_my_intentions_simple(cli, valid_cookie):
+    response = await cli.get('/profile/mypage/intentions', cookies=valid_cookie)
+
+    assert response.status == 200
+    data = await response.json()
+
+    assert type(data) == list and len(data) == 0
+
+# TODO
+# async def test_get_my_intentions_with_intention(cli, valid_cookie):
+#     response = await cli.get('/profile/mypage/intentions', cookies=valid_cookie)
+
+#     assert response.status == 200
+#     data = await response.json()
+
+#     assert type(data) == list and len(data) == 0
+
+async def test_add_intention_success(cli, valid_cookie, profile_vkid_with_wish_and_prod_id):
+    dest_id, product_id = profile_vkid_with_wish_and_prod_id
+
+    response = await cli.post('/profile/mypage/intentions', cookies=valid_cookie, json={
+        'dest_id' : dest_id,
+        'product_id' : product_id
+    })
+
+    assert response.status == 201
+
+async def test_add_intention_fail_no_such_wish(cli, valid_cookie, new_product_mongo, new_profile_and_cookie):
+    dest_profile, _ = new_profile_and_cookie
+
+    response = await cli.post('/profile/mypage/intentions', cookies=valid_cookie, json={
+        'dest_id' : dest_profile['vk_id'],
+        'product_id' : new_product_mongo._id
+    })
+
+    assert response.status == 404
+
+async def test_add_intention_fail_invalid_data(cli, valid_cookie):
+    response = await cli.post('/profile/mypage/intentions', cookies=valid_cookie, json={
+        'dest_id' : 'not_vk_id',
+        'product_id' : 'not_mongo_id'
+    })
+
+    assert response.status == 400
+
+
+
 
 
 

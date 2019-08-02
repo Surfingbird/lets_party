@@ -245,10 +245,24 @@ async def add_my_intentions(request):
 
     pid = data['product_id']
     dest_vk_id = data['dest_id']
+    
+    dest_prof = None
 
-    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
-    if dest_prof is None:
+    try:
+        dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
+    except TypeError:
         return web.Response(status=400)
+
+    if dest_prof is None:
+        return web.Response(status=404)
+    
+    ok = False
+    for wish in dest_prof['wishes']:
+        if wish['product_id'] == pid:
+            ok = True
+
+    if not ok:
+        return web.Response(status=404)
 
     dest_id = dest_prof['_id']
 
@@ -256,7 +270,7 @@ async def add_my_intentions(request):
     if ok is not True:
         return web.Response(status=400)
 
-    return web.Response(status=web.HTTPCreated)
+    return web.Response(status=201)
 
 
 # OK
@@ -305,6 +319,7 @@ async def users_wishes(request):
         sponsor_id = wish.pop('sponsor_id')
         if sponsor_id == my_id:
             wish['reserved_by_me'] = True
+
         else:
             wish['reserved_by_me'] = False
 
@@ -330,4 +345,7 @@ async def intentions_for_user(request):
 async def notifications(request):
     return web.Response(text="notification")
 
-    
+
+
+
+

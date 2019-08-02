@@ -13,8 +13,8 @@ from tests.sub_functions import gen_vk_url
 from polls.main_api_app.settings import APP_SECRET, COOKIE_NAME
 
 from polls.main_api_app.elastick_client import ElastickClient
-test_es_path = 'http://0.0.0.0:9200/test/product/'
 
+test_es_path = 'http://0.0.0.0:9200/test/product/'
 TESTDATABASE = 'test_database'
 fm = FakeModelManager()
 
@@ -93,6 +93,30 @@ async def new_profile_cookie_and_wish_id(event_loop, app, cli, valid_cookie, new
         'product_id' : new_product_mongo._id})
 
     yield valid_cookie, new_product_mongo._id
+
+@pytest.fixture
+async def new_profile_and_cookie(event_loop, app, cli):
+    vk_id = random.randint(1, 1000000000)
+    url = gen_vk_url(vk_id, APP_SECRET)
+
+    respose = await cli.post('/auth', json = {'url':url})
+    cookie = respose.cookies[COOKIE_NAME]
+    cookie_data = {'value' : cookie.value}
+
+    prof = await Profile.objects.get(vk_id=vk_id)
+
+    yield prof, cookie_data
+
+    await Profile.objects.delete(vk_id=vk_id)
+
+@pytest.fixture
+async def profile_vkid_with_wish_and_prod_id(event_loop, app, cli, new_profile_and_cookie, new_product_mongo):
+    profile, cookie = new_profile_and_cookie
+
+    await cli.post('/profile/mypage/wishes', cookies=cookie, json={
+        'product_id' : new_product_mongo._id})
+
+    yield profile['vk_id'], new_product_mongo._id
 
 
 

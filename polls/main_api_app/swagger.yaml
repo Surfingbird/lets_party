@@ -266,7 +266,12 @@ paths:
 
       responses:
         201:
-          description: ""
+          description: "Успешно добавлено обещание"
+        404:
+          description: "Такого профиля или товара нет"
+        400:
+          description: "Некорректные данные"
+
 
     delete:
       tags:
@@ -395,7 +400,7 @@ definitions:
   Wish:
     type: "object"
     properties:
-      p_id:
+      product_id:
         type: "string"
 
       reserved:
