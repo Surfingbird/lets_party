@@ -147,6 +147,7 @@ class ModelManager:
         #     async with s.start_transaction():
         s = None
         collection = Profile.Meta.collection_name
+        db = get_mongo_conn()
 
         selector, update = del_users_wish_query(uid, pid)
         res = await db[collection].update_one(selector, update, session=s)

@@ -232,7 +232,9 @@ paths:
 
       responses:
         200:
-          description: ""
+          description: "Пожелание было успешно удалено"
+        400:
+          description: "Некорректные данные"
 
 
   /profile/mypage/intentions:

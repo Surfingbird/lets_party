@@ -71,6 +71,25 @@ async def test_del_wish_success(cli, new_profile_cookie_and_wish_id):
 
     assert len(data) == 0
 
+async def test_del_wish_invalid_product_id(cli, new_profile_cookie_and_wish_id):
+    cookie, product_id = new_profile_cookie_and_wish_id
+
+    response = await cli.delete('/profile/mypage/wishes', cookies=cookie, json={
+        'product_id' : product_id[::-1]})
+
+    assert response.status == 400
+
+async def test_del_wish_invalid_not_found(cli, valid_cookie, new_product_mongo):
+    response = await cli.delete('/profile/mypage/wishes', cookies=valid_cookie, json={
+        'product_id' : new_product_mongo._id})
+
+    # TODO maybe change logic
+    assert response.status == 200
+
+async def test_del_wish_invalid_no_data(cli, valid_cookie, new_product_mongo):
+    response = await cli.delete('/profile/mypage/wishes', cookies=valid_cookie)
+
+    assert response.status == 400
 
 
 
