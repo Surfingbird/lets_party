@@ -302,8 +302,8 @@ async def del_my_intentions(request):
 
 # OK
 async def users_wishes(request):
-    dest_vk_id = request.match_info['dest_id']
-    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
+    dest_vk_id = int(request.match_info['dest_id'])
+    dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
     if dest_prof is None:
         return web.Response(status=404)
 
@@ -327,8 +327,8 @@ async def users_wishes(request):
 
 # OK
 async def intentions_for_user(request):
-    dest_vk_id = request.match_info['dest_id']
-    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
+    dest_vk_id = int(request.match_info['dest_id'])
+    dest_prof =  await Profile.objects.get(vk_id=dest_vk_id)
     if dest_prof is None:
         return web.Response(status=404)
 
