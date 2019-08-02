@@ -99,14 +99,14 @@ async def test_get_my_intentions_simple(cli, valid_cookie):
 
     assert type(data) == list and len(data) == 0
 
-# TODO
-# async def test_get_my_intentions_with_intention(cli, valid_cookie):
-#     response = await cli.get('/profile/mypage/intentions', cookies=valid_cookie)
+async def test_get_my_intentions_with_intention(cli, cookie_with_intention):
+    response = await cli.get('/profile/mypage/intentions', cookies=cookie_with_intention)
+    assert response.status == 200
+    data = await response.json()
 
-#     assert response.status == 200
-#     data = await response.json()
-
-#     assert type(data) == list and len(data) == 0
+    assert type(data) == list and len(data) == 1
+    for intention in data:
+        extended_intention_t.check(intention)
 
 async def test_add_intention_success(cli, valid_cookie, profile_vkid_with_wish_and_prod_id):
     dest_id, product_id = profile_vkid_with_wish_and_prod_id

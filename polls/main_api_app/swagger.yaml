@@ -288,7 +288,11 @@ paths:
 
       responses:
         200:
-          description: ""
+          description: "Успешно удалено обещание"
+        404:
+          description: "Такого обещания нет"
+        400:
+          description: "Некорректные данные"
 
 
   /profile/[dest_id]/wishes:

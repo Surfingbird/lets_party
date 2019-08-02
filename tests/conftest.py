@@ -118,5 +118,18 @@ async def profile_vkid_with_wish_and_prod_id(event_loop, app, cli, new_profile_a
 
     yield profile['vk_id'], new_product_mongo._id
 
+@pytest.fixture
+async def cookie_with_intention(event_loop, app, cli, valid_cookie, profile_vkid_with_wish_and_prod_id):
+    dest_id, product_id = profile_vkid_with_wish_and_prod_id
+
+    res = await cli.post('/profile/mypage/intentions', cookies=valid_cookie, json={
+        'product_id' : product_id,
+        'dest_id' : dest_id})
+    assert res.status == 201
+
+    yield valid_cookie
+
+
+
 
 
