@@ -287,7 +287,7 @@ async def del_my_intentions(request):
     pid = data['product_id']
     dest_vk_id = data['dest_id']
 
-    dest_prof = Profile.objects.get(vk_id=dest_vk_id)
+    dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
     if dest_prof is None:
         return web.Response(status=400)
 

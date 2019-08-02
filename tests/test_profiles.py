@@ -136,6 +136,20 @@ async def test_add_intention_fail_invalid_data(cli, valid_cookie):
 
     assert response.status == 400
 
+async def test_del_intention_success(cli, cookie_pid_destid_prof_with_wish):
+    cookie, product_id, dest_id = cookie_pid_destid_prof_with_wish
+
+    response = await cli.delete('/profile/mypage/intentions', cookies=cookie, json={
+        'dest_id' : dest_id,
+        'product_id' : product_id
+    })
+    assert response.status == 200
+
+    response = await cli.get('/profile/mypage', cookies=cookie)
+    assert response.status == 200
+
+    data = await response.json()
+    assert len(data['intentions']) == 0
 
 
 
