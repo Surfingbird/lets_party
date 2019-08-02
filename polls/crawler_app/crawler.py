@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from collections import deque
 
+from polls.models.db import init_mongodb, DBNAME
+
 import re
 
 import polls.models.model_manager as model_manager
@@ -80,6 +82,8 @@ class Crawler:
         self.rabbit_connection = await aio_pika.connect(
         "amqp://guest:guest@127.0.0.1/")
         self.rabbit_chanel = await self.rabbit_connection.channel()
+
+        init_mongodb(dbname=DBNAME)
 
         self.rabbit_q = await self.rabbit_chanel.declare_queue(
              self.rabbit_q_name, auto_delete=True)

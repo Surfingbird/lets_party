@@ -1,6 +1,8 @@
 import asyncio
 import crawler
 
+from polls.models.db import init_mongodb, DBNAME
+
 base_url = 'https://www.wildberries.ru/catalog/zhenshchinam/bele-i-kupalniki/trusy'
 max_rps = 10
 workers_count = 1
