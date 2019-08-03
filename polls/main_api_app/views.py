@@ -304,8 +304,15 @@ async def del_my_intentions(request):
 async def users_wishes(request):
     dest_vk_id = int(request.match_info['dest_id'])
     dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
+
+    # TODO FIX CRUNCH
     if dest_prof is None:
-        return web.Response(status=404)
+        print('create new profile')
+        new_profile = Profile(vk_id=dest_vk_id)
+        await new_profile.save()
+
+        dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
+        # return web.Response(status=404)
 
     dest_id = dest_prof['_id']
 
@@ -329,8 +336,15 @@ async def users_wishes(request):
 async def intentions_for_user(request):
     dest_vk_id = int(request.match_info['dest_id'])
     dest_prof =  await Profile.objects.get(vk_id=dest_vk_id)
+
+    # TODO fix crunch
     if dest_prof is None:
-        return web.Response(status=404)
+        print('create new profile')
+        new_profile = Profile(vk_id=dest_vk_id)
+        await new_profile.save()
+
+        dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
+        # return web.Response(status=404)
 
     dest_id = dest_prof['_id']
 
