@@ -323,12 +323,16 @@ async def users_wishes(request):
         return web.Response(status=404)
 
     for wish in wishes:
-        sponsor_id = wish.pop('sponsor_id')
-        if sponsor_id == my_id:
-            wish['reserved_by_me'] = True
+        if 'sponsor_id' in wish:
+            sponsor_id = wish.pop('sponsor_id')
+            if sponsor_id == my_id:
+                wish['reserved_by_me'] = True
 
+            else:
+                wish['reserved_by_me'] = False
         else:
             wish['reserved_by_me'] = False
+            wish['reserved'] = False
 
     return web.json_response(wishes)
 
