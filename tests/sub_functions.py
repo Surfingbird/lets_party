@@ -76,6 +76,18 @@ extended_wish_t = t.Dict({
     t.Key('product_url'): t.String()
 })
 
+extended_alien_wish_t = t.Dict({
+    t.Key('_id'): ObjectId,
+    t.Key('product_id'): t.String(),
+    t.Key('reserved'): t.Bool(),
+    t.Key('reserved_by_me'): t.Bool(),
+    t.Key('product_name'): t.String(),
+    t.Key('discription'): t.String(),
+    t.Key('price'): t.Float(),
+    t.Key('img_url'): t.String(),
+    t.Key('product_url'): t.String()
+})
+
 intention_t = t.Dict({
     t.Key('product_id'): t.String(),
     t.Key('dest_id'): t.String(),

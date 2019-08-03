@@ -151,6 +151,24 @@ async def test_del_intention_success(cli, cookie_pid_destid_prof_with_wish):
     data = await response.json()
     assert len(data['intentions']) == 0
 
+async def get_profiles_wishes_success(cli, valid_cookie, profile_vkid_with_wish_and_prod_id):
+    dest_id, _ = profile_vkid_with_wish_and_prod_id
+
+    response = await cli.get('/profile/' + dest_id + '/wishes', cookies=valid_cookie)
+    assert response.status == 200
+
+    data = await response.json()
+    assert type(data) == list
+    assert len(data) == 1
+    extended_alien_wish_t.check(data[0])
+
+
+
+
+
+
+
+
 
 
 
