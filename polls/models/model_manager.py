@@ -202,7 +202,7 @@ class ModelManager:
         return extended_wishes
 
 
-    # OK
+    # TODO FIX CRUNCH WITH ID
     async def get_users_intentions(self, uid):
         res = await Profile.objects.get(_id=uid)
         if res is None:
@@ -215,6 +215,11 @@ class ModelManager:
             product = await Product.objects.get(_id=product_id)
             if product is not None:
                 extended =  {**intention, **product}
+                dest_id = extended['dest_id']
+                prof = await Profile.objects.get(_id=dest_id)
+
+                extended['dest_id'] = prof['vk_id']
+                
                 extended_intentions.append(extended)
 
         return extended_intentions

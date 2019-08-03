@@ -271,7 +271,7 @@ async def add_my_intentions(request):
 
     ok = await mm.add_users_intention(uid, pid, dest_id)
     if ok is not True:
-        print('can not create intention')
+        print('can not create intentio')
         return web.Response(status=400)
 
     return web.Response(status=201)
