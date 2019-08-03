@@ -13,7 +13,9 @@ class ModelManager:
         document = product.to_dict()
         db = get_mongo_conn()
 
-        res = await db.product_collection.insert_one(document)
+        collection = Product.Meta.collection_name
+
+        res = await db[collection].insert_one(document)
 
         return str(res.inserted_id)
 
@@ -41,7 +43,9 @@ class ModelManager:
     async def check_wish(self, uid, pid):
         db = get_mongo_conn()
 
-        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid), 'wishes' : {'p_id' : ObjectId(pid)}})
+        collection = Profile.Meta.collection_name
+
+        res = await db[collection].find_one({'_id' : ObjectId(uid), 'wishes' : {'p_id' : ObjectId(pid)}})
         if res is None:
             return False
         else:
@@ -51,19 +55,25 @@ class ModelManager:
     async def get_profile(self, uid):
         db = get_mongo_conn()
 
-        return await db.profiles_collection.find_one({'_id' : ObjectId(uid)})
+        collection = Profile.Meta.collection_name
+
+        return await db[collection].find_one({'_id' : ObjectId(uid)})
 
 
     async def get_product(self, pid):
         db = get_mongo_conn()
 
-        return await db.product_collection.find_one({'_id' : ObjectId(pid)})
+        collection = Product.Meta.collection_name
+
+        return await db[collection].find_one({'_id' : ObjectId(pid)})
 
 
     async def check_user(self, uid):
         db = get_mongo_conn()
 
-        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid)})
+        collection = Profile.Meta.collection_name
+
+        res = await db[collection].find_one({'_id' : ObjectId(uid)})
         if res is None:
             return False
         else:
@@ -74,7 +84,9 @@ class ModelManager:
     async def check_intention(self, uid, pid, dest_id):
         db = get_mongo_conn()
 
-        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid), 'intentions' : {'product_id' : pid, 'dest_id' : dest_id}})
+        collection = Profile.Meta.collection_name
+
+        res = await db[collection].find_one({'_id' : ObjectId(uid), 'intentions' : {'product_id' : pid, 'dest_id' : dest_id}})
         if res is None:
             return False
         else:
@@ -84,7 +96,9 @@ class ModelManager:
     async def check_product(self, pid):
         db = get_mongo_conn()
 
-        res = await db.product_collection.find_one({'_id' : ObjectId(pid)})
+        collection = Product.Meta.collection_name  
+
+        res = await db[collection].find_one({'_id' : ObjectId(pid)})
         if res is None:
             return False
         else:
@@ -94,7 +108,9 @@ class ModelManager:
     async def del_profile(self, uid):
         db = get_mongo_conn()
 
-        res = await db.profiles_collection.delete_one({'_id' : ObjectId(uid)})
+        collection = Profile.Meta.collection_name  
+
+        res = await db[collection].delete_one({'_id' : ObjectId(uid)})
         if res is None:
             return False
         else:
@@ -103,8 +119,10 @@ class ModelManager:
 
     async def del_product(self, pid):
         db = get_mongo_conn()
+
+        collection = Product.Meta.collection_name  
         
-        res = await db.product_collection.delete_one({'_id' : ObjectId(pid)})
+        res = await db[collection].delete_one({'_id' : ObjectId(pid)})
         if res is None:
             return False
         else:
@@ -227,6 +245,7 @@ class ModelManager:
     async def add_users_intention(self, uid, pid, dest_id):
         res = await self.check_user(uid)
         if res is None:
+
             return False
 
         res = await self.check_user(dest_id)

@@ -241,6 +241,7 @@ async def add_my_intentions(request):
     try:
         data = await request.json()
     except ValueError:
+        print('invalid data')
         return web.Response(status=400)
 
     pid = data['product_id']
@@ -251,9 +252,11 @@ async def add_my_intentions(request):
     try:
         dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
     except TypeError:
+        print('no user invalid id')
         return web.Response(status=400)
 
     if dest_prof is None:
+        print('no user')
         return web.Response(status=404)
     
     ok = False
@@ -268,6 +271,7 @@ async def add_my_intentions(request):
 
     ok = await mm.add_users_intention(uid, pid, dest_id)
     if ok is not True:
+        print('can not create intention')
         return web.Response(status=400)
 
     return web.Response(status=201)
@@ -362,8 +366,3 @@ async def intentions_for_user(request):
 
 async def notifications(request):
     return web.Response(text="notification")
-
-
-
-
-
