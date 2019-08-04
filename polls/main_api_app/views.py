@@ -238,7 +238,6 @@ async def add_my_intentions(request):
     try:
         data = await request.json()
     except ValueError:
-        print('invalid data')
         return web.Response(status=400)
 
     pid = data['product_id']
@@ -249,11 +248,9 @@ async def add_my_intentions(request):
     try:
         dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
     except TypeError:
-        print('no user invalid id')
         return web.Response(status=400)
 
     if dest_prof is None:
-        print('no user')
         return web.Response(status=404)
     
     ok = False
@@ -268,7 +265,6 @@ async def add_my_intentions(request):
 
     ok = await mm.add_users_intention(uid, pid, dest_id)
     if ok is not True:
-        print('can not create intentio')
         return web.Response(status=400)
 
     return web.Response(status=201)
@@ -300,28 +296,18 @@ async def del_my_intentions(request):
 
     return web.Response(text='del_my_intentions!')
 
-
-
 async def users_wishes(request):
     dest_vk_id = int(request.match_info['dest_id'])
     dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
 
-    # TODO FIX CRUNCH
     if dest_prof is None:
-        print('create new profile')
-        new_profile = Profile(vk_id=dest_vk_id)
-        await new_profile.save()
-
-        dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
-        # return web.Response(status=404)
+        return web.json_response(list())
 
     dest_id = dest_prof['_id']
 
     my_id = request['uid'] 
 
     wishes = await mm.get_users_wishes(dest_id)
-    if wishes is None:
-        return web.Response(status=404)
 
     for wish in wishes:
         if 'sponsor_id' in wish:
@@ -337,19 +323,12 @@ async def users_wishes(request):
 
     return web.json_response(wishes)
 
-# OK
 async def intentions_for_user(request):
     dest_vk_id = int(request.match_info['dest_id'])
     dest_prof =  await Profile.objects.get(vk_id=dest_vk_id)
 
-    # TODO fix crunch
     if dest_prof is None:
-        print('create new profile')
-        new_profile = Profile(vk_id=dest_vk_id)
-        await new_profile.save()
-
-        dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
-        # return web.Response(status=404)
+        return web.json_response(list())
 
     dest_id = dest_prof['_id']
 
@@ -357,9 +336,6 @@ async def intentions_for_user(request):
 
     intentions = await mm.intentions_for_user(uid, dest_id)
     if intentions is None:
-        return web.Response(status=404)
+        return web.json_response(list())
 
     return web.json_response(intentions)
-
-async def notifications(request):
-    return web.Response(text="notification")
