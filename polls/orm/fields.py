@@ -6,7 +6,6 @@ class Field:
 
     def check_type(self, value):
         if not isinstance(value,  self.f_type):
-            print(self.f_type, type(value))
             raise TypeError
 
     def validate(self, value):

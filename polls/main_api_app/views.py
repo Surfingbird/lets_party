@@ -312,6 +312,7 @@ async def users_wishes(request):
     for wish in wishes:
         if 'sponsor_id' in wish:
             sponsor_id = wish.pop('sponsor_id')
+            print('sponsor: ', sponsor_id, ' my_id: ', my_id)
             if sponsor_id == my_id:
                 wish['reserved_by_me'] = True
 

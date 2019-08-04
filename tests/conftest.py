@@ -44,6 +44,7 @@ async def new_product_mongo(event_loop, app):
     yield product
     await product.delete()
 
+# TODO FIX BUG WITH DELETE PRODUCT
 @pytest.fixture
 async def new_10_products_mongo(event_loop, app):
     _ids = []
@@ -59,6 +60,7 @@ async def new_10_products_mongo(event_loop, app):
 @pytest.fixture
 async def valid_cookie(event_loop, app, cli):
     vk_id = random.randint(1, 1000000000)
+    print('cookie id ', vk_id)
     url = gen_vk_url(vk_id, APP_SECRET)
 
     respose = await cli.post('/auth', json = {'url':url})
@@ -69,6 +71,38 @@ async def valid_cookie(event_loop, app, cli):
 
     await Profile.objects.delete(vk_id=vk_id)
 
+@pytest.fixture
+async def cookie_with_profile_dict(event_loop, app, cli):
+    vk_id = random.randint(1, 1000000000)
+    print('cookie id ', vk_id)
+    url = gen_vk_url(vk_id, APP_SECRET)
+
+    respose = await cli.post('/auth', json = {'url':url})
+    cookie = respose.cookies[COOKIE_NAME]
+    cookie_data = {'value' : cookie.value}
+
+    profile = await Profile.objects.get(vk_id=vk_id)
+
+    yield cookie_data, profile
+
+    await Profile.objects.delete(vk_id=vk_id)
+
+@pytest.fixture
+async def second_cookie_with_profile_dict(event_loop, app, cli):
+    vk_id = random.randint(1, 1000000000)
+    print('cookie id ', vk_id)
+    url = gen_vk_url(vk_id, APP_SECRET)
+
+    respose = await cli.post('/auth', json = {'url':url})
+    cookie = respose.cookies[COOKIE_NAME]
+    cookie_data = {'value' : cookie.value}
+
+    profile = await Profile.objects.get(vk_id=vk_id)
+
+    yield cookie_data, profile
+
+    await Profile.objects.delete(vk_id=vk_id)
+    
 @pytest.fixture
 async def new_product_in_app(event_loop, app):
     pattern = 'pattern'
@@ -140,7 +174,64 @@ async def cookie_pid_destid_prof_with_wish(event_loop, app, cli, valid_cookie, p
 
     yield valid_cookie, product_id, dest_id
 
+@pytest.fixture
+async def profile_with_wish_and_product(event_loop, app, cli, new_product_mongo):
+    vk_id = random.randint(1, 1000000000)
+    print('vk_id wont ', vk_id)
+    prof = Profile(vk_id=vk_id)
+    await prof.save()
 
+    url = gen_vk_url(vk_id, APP_SECRET)
 
+    respose = await cli.post('/auth', json = {'url':url})
+    dest_cookie = respose.cookies[COOKIE_NAME]
+    dest_cookie_data = {'value' : dest_cookie.value}
 
+    res = await cli.post('/profile/mypage/wishes', cookies=dest_cookie_data,
+    json={'product_id' : new_product_mongo._id})
+    assert res.status == 201
 
+    yield prof, new_product_mongo
+
+    await prof.delete()
+
+@pytest.fixture
+async def profile_with_reserved_wish(event_loop, app, cli, profile_with_wish_and_product):
+    sponsor_vk_id = random.randint(1, 1000000000)
+    print('vk_id sponsor ', sponsor_vk_id)
+    sponsor_prof = Profile(vk_id=sponsor_vk_id)
+    await sponsor_prof.save()
+
+    sponsor_url = gen_vk_url(sponsor_vk_id, APP_SECRET)
+
+    respose = await cli.post('/auth', json = {'url':sponsor_url})
+    sponsor_cookie = respose.cookies[COOKIE_NAME]
+    sponsor_cookie_data = {'value' : sponsor_cookie.value}
+
+    dest_prof, product = profile_with_wish_and_product
+
+    res = await cli.post('/profile/mypage/intentions',
+    cookies=sponsor_cookie_data, 
+    json={
+        'product_id' : product._id,
+        'dest_id' : dest_prof.vk_id
+    })
+    assert res.status == 201
+
+    yield dest_prof
+
+    await sponsor_prof.delete()
+
+@pytest.fixture
+async def cookie_and_profile_with_res_intention(event_loop, app, cli, valid_cookie, profile_with_wish_and_product):
+    dest_prof, product = profile_with_wish_and_product
+
+    res = await cli.post('/profile/mypage/intentions',
+    cookies=valid_cookie, 
+    json={
+        'product_id' : product._id,
+        'dest_id' : dest_prof.vk_id
+    })
+    assert res.status == 201
+
+    yield valid_cookie, dest_prof
