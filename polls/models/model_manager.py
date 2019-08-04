@@ -29,7 +29,7 @@ class ModelManager:
 
         url = db.main_url + str(last_id) + "?pretty"
 
-        async with db.es_session.put(url, json=(data)) as resp:
+        async with db.es_session.put(url, json=(data)):
             pass
 
 

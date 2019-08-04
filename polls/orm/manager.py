@@ -1,11 +1,12 @@
 import asyncio
 import inspect 
-
 import bson
+
+from pymongo.results import DeleteResult, UpdateResult
+
 from polls.models.db import db, get_mongo_conn
 from polls.orm.query_set import QuerySet
 from bson.objectid import ObjectId
-
 
 class Manage:
     def __init__(self):
@@ -24,7 +25,7 @@ class Manage:
         await obj.save()
 
 
-    async def get(self, **kwargs):
+    async def get(self, **kwargs) -> dict:
         collection  = self.model_cls.Meta.collection_name
         selector = dict()
 
@@ -48,12 +49,12 @@ class Manage:
         return data
 
 
-    def filter(self, **selector):
+    def filter(self, **selector) -> QuerySet:
         collection  = self.model_cls.Meta.collection_name
         return QuerySet(selector, collection)
 
 
-    async def update(self, **kwargs):
+    async def update(self, **kwargs) -> UpdateResult:
         for key, value in kwargs.items():
             self.model_cls.__dict__[key].validate(value)
 
@@ -63,7 +64,7 @@ class Manage:
         await db[collection].update_many({}, { '$set' : kwargs})
 
 
-    async def delete(self, **kwargs):
+    async def delete(self, **kwargs) -> DeleteResult:
         for key, value in kwargs.items():
             self.model_cls.__dict__[key].validate(value)
 
@@ -72,10 +73,10 @@ class Manage:
 
         await db[collection].delete_many(kwargs)
 
-    async def count(self):
-        collection  = self.model_cls.Meta.collection_name
+    async def count(self) -> int:
+        collection: str  = self.model_cls.Meta.collection_name
         db = get_mongo_conn()
 
-        n = await db[collection].count_documents({})
+        n: int  = await db[collection].count_documents({})
 
         return n

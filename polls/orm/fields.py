@@ -51,6 +51,3 @@ class ListField():
 
     def validate(self, value):
         self.check_type(value)
-
-        # for item in value:
-        #     self.f_type.validate(item)

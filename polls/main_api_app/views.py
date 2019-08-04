@@ -57,14 +57,14 @@ async def login(request):
 
     return response
 
-# OK
+
 async def logout(request):
     response = web.Response()
     response.del_cookie(name=COOKIE_NAME)
 
     return response
 
-# OK
+
 async def new_products(request):
     queryset = Product.objects.filter()
     data = []
@@ -75,7 +75,6 @@ async def new_products(request):
     return web.json_response(data)
 
 
-# OK
 async def product(request):
     product_id = request.match_info['id']
 
@@ -93,7 +92,6 @@ async def product(request):
         return web.Response(status="404")  
 
 
-# OK
 async def search_products(request):
     pattern = None
 
@@ -114,7 +112,6 @@ async def search_products_result(request):
     return web.json_response(data)
 
 
-# OK
 async def products_list(request):
     start = 0
     limit = 0
@@ -145,7 +142,7 @@ async def products_list(request):
 
     return web.json_response(data)
 
-# OK
+
 async def mypage(request):
     uid = request['uid']
 
@@ -165,7 +162,7 @@ async def mypage(request):
     return web.json_response(profile)
 
 
-# OK
+
 async def my_wishes(request):
     uid = request['uid']
 
@@ -180,7 +177,7 @@ async def my_wishes(request):
 
     return web.json_response(wishes)
 
-# OK
+
 async def add_my_wishe(request):
     uid = request['uid']
 
@@ -202,7 +199,7 @@ async def add_my_wishe(request):
 
     return web.Response(status=201)
 
-#  OK
+
 async def del_my_wishe(request):
     uid = request['uid']
 
@@ -221,7 +218,7 @@ async def del_my_wishe(request):
     return web.Response()
 
 
-# OK
+
 async def my_intentions(request):
     uid = request['uid']
 
@@ -232,7 +229,7 @@ async def my_intentions(request):
     return web.json_response(intentions)
 
 
-# OK
+
 async def add_my_intentions(request):
     uid = request['uid']
 
@@ -277,7 +274,7 @@ async def add_my_intentions(request):
     return web.Response(status=201)
 
 
-# OK
+
 async def del_my_intentions(request):
     uid = request['uid']
 
@@ -304,7 +301,7 @@ async def del_my_intentions(request):
     return web.Response(text='del_my_intentions!')
 
 
-# OK
+
 async def users_wishes(request):
     dest_vk_id = int(request.match_info['dest_id'])
     dest_prof = await Profile.objects.get(vk_id=dest_vk_id)
