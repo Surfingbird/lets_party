@@ -26,10 +26,10 @@ async def login(request):
     data = {}
     try:
         data = await request.json()
-    except ValueError:
-        return web.Response(status=400)
+        if 'url' not in data:
+            raise ValueError
 
-    if 'url' not in data:
+    except ValueError:
         return web.Response(status=400)
 
     url = data['url']

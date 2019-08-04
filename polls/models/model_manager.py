@@ -51,22 +51,6 @@ class ModelManager:
         else:
             return True
 
-    
-    async def get_profile(self, uid):
-        db = get_mongo_conn()
-
-        collection = Profile.Meta.collection_name
-
-        return await db[collection].find_one({'_id' : ObjectId(uid)})
-
-
-    async def get_product(self, pid):
-        db = get_mongo_conn()
-
-        collection = Product.Meta.collection_name
-
-        return await db[collection].find_one({'_id' : ObjectId(pid)})
-
 
     async def check_user(self, uid):
         db = get_mongo_conn()
