@@ -150,15 +150,6 @@ async def mypage(request):
     if profile is None:
         return web.Response(status=404)
 
-    # TODO убрать
-    for wish in profile['wishes']:
-        wish['product_id'] = str(wish['product_id'])
-
-    # TODO убрать
-    for intention in profile['intentions']:
-        intention['product_id'] = str(intention['product_id'])
-        intention['dest_id'] = str(intention['dest_id'])
-
     return web.json_response(profile)
 
 

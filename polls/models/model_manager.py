@@ -32,14 +32,7 @@ class ModelManager:
         async with db.es_session.put(url, json=(data)):
             pass
 
-
-    # async def get_products(self):
-    #     db = get_mongo_conn()
-
-    #     return await db.product_collection.find().limit(PRODUCTS_ON_PAGE).to_list(length=PRODUCTS_ON_PAGE)
-
-
-    # TODO написать тест
+# TODO FIX BUG
     async def check_wish(self, uid, pid):
         db = get_mongo_conn()
 
@@ -326,10 +319,8 @@ def del_users_intention_query_wo_sponsor(uid, pid):
 def del_users_wish_query(uid, pid):
     return {'_id' : ObjectId(uid)}, {'$pull' : {'wishes' : {'product_id' : pid}}}
 
-
 def reserve_users_wish_query(uid, pid, dest_id):
     return {'_id': ObjectId(dest_id), 'wishes.product_id' : pid}, {'$set' : {'wishes.$.reserved' : True, 'wishes.$.sponsor_id' : uid}}
 
-# TODO описать логику проверки поля reserved, чтобы не перезаписывать спонсора
 def close_res_users_wish_query(uid, pid, dest_id):
     return {'_id': ObjectId(dest_id), 'wishes.product_id' : pid}, {'$set' : {'wishes.$.reserved' : False}}
