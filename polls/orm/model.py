@@ -69,10 +69,6 @@ class Model:
         collection = self.Meta.collection_name
         _id = self.__dict__['_id']
 
-<<<<<<< HEAD
-        await db[collection].delete_one({'_id' : ObjectId(_id)})
-=======
         db = get_mongo_conn()
 
         await db[collection].delete_one({'_id' : ObjectId(_id)})
->>>>>>> develop
