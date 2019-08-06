@@ -1,10 +1,6 @@
 import asyncio
 
-<<<<<<< HEAD
-from polls.models.db import db
-=======
 from polls.models.db import db, get_mongo_conn
->>>>>>> develop
 
 from bson.objectid import ObjectId
 from polls.models.orm_models import Product, Profile

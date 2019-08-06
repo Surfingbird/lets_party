@@ -2,13 +2,9 @@ import asyncio
 import inspect 
 import bson
 
-<<<<<<< HEAD
-from polls.models.db import db
-=======
 from pymongo.results import DeleteResult, UpdateResult
 
 from polls.models.db import db, get_mongo_conn
->>>>>>> develop
 from polls.orm.query_set import QuerySet
 from bson.objectid import ObjectId
 

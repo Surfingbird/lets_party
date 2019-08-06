@@ -6,11 +6,7 @@ from polls.orm.fields import Field, StringField, IntField, ListField
 from polls.orm.query_set import QuerySet
 from polls.orm.manager import Manage
 
-<<<<<<< HEAD
-from polls.models.db import db
-=======
 from polls.models.db import db, get_mongo_conn
->>>>>>> develop
 
 class Model:
     objects = Manage()

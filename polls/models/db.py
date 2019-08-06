@@ -2,18 +2,6 @@ import motor.motor_asyncio
 import asyncio
 import aiohttp
 
-<<<<<<< HEAD
-# MONGODB
-HOST = 'localhost'
-PORT = 27017
-DBNAME = 'kts_orm'
-
-client = None
-db = None
-
-product_collection = None
-profiles_collection = None
-=======
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 # MongoDB
@@ -40,7 +28,6 @@ def get_mongo_conn():
     global db
 
     return db
->>>>>>> develop
 
 #ES DB
 scheme: str = "http://"
