@@ -1,3 +1,5 @@
+import time
+
 from aiohttp import web
 from polls.main_api_app.routes import setup_routes
 from polls.main_api_app import auth
@@ -11,6 +13,16 @@ async def cors_middleware(request, handler):
   
     return response
 
+@web.middleware
+async def logger_middleware(request, handler):
+    start = time.time()
+
+    response = await handler(request)
+
+    end = time.time()
+  
+    return response
+
 def create_app(loop=None, dbname=DBNAME, es_path=ES_PATH):
     app = web.Application(middlewares=[auth.check_token_middleware], loop=loop)
     setup_routes(app)
@@ -21,6 +33,9 @@ def create_app(loop=None, dbname=DBNAME, es_path=ES_PATH):
     return app
 
 if __name__ == "__main__":
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+
     app = create_app()
 
     web.run_app(app)
