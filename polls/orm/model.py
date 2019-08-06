@@ -6,7 +6,11 @@ from polls.orm.fields import Field, StringField, IntField, ListField
 from polls.orm.query_set import QuerySet
 from polls.orm.manager import Manage
 
+<<<<<<< HEAD
 from polls.models.db import db
+=======
+from polls.models.db import db, get_mongo_conn
+>>>>>>> develop
 
 class Model:
     objects = Manage()
@@ -48,7 +52,8 @@ class Model:
             
             document.pop('_id', document)
             document.pop('changed', document)
-
+            
+            db = get_mongo_conn()
             res = await db[collection].insert_one(document)
             self._id = (str(res.inserted_id))
 
@@ -58,6 +63,8 @@ class Model:
             _id = document.pop('_id', document)
             document.pop('changed', document)
 
+            db = get_mongo_conn()
+
             await db[collection].update_one({'_id' : ObjectId(_id)}, {'$set' : document})
             self.changed = False
 
@@ -66,4 +73,10 @@ class Model:
         collection = self.Meta.collection_name
         _id = self.__dict__['_id']
 
+<<<<<<< HEAD
         await db[collection].delete_one({'_id' : ObjectId(_id)})
+=======
+        db = get_mongo_conn()
+
+        await db[collection].delete_one({'_id' : ObjectId(_id)})
+>>>>>>> develop

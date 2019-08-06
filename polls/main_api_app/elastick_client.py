@@ -5,14 +5,14 @@ import json
 from polls.models.fake_model_manager import FakeModelManager
 
 class ElastickClient:
-    path = 'http://0.0.0.0:9200/products/product/'
-
-    def __init__(self):
+    def __init__(self, loop=None, path='http://0.0.0.0:9200/products/product/'):
         self.session = None
         self.last_insert_id = 100
+        self.loop = loop
+        self.path = path
 
     def connect(self):
-          self.session = aiohttp.ClientSession()
+          self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def disconnect(self):
         await self.session.close()
@@ -20,13 +20,14 @@ class ElastickClient:
     async def add_product(self, product):
         data =  product.__dict__.copy()
         _id = data.pop('_id')
+        data.pop('changed')
         data['id'] = _id
 
         self.last_insert_id += 1
         url = self.path + str(self.last_insert_id) + '?pretty'
 
         async with self.session.put(url, json=(data)) as resp:
-            pass
+            pass 
 
     async def get_products(self, pattern):
         query = {"query": { "match": { "product_name": pattern } }}

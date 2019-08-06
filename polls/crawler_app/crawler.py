@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from collections import deque
 
+from polls.models.db import init_mongodb, DBNAME
+
 import re
 
 import polls.models.model_manager as model_manager
@@ -20,6 +22,7 @@ es_client = ElastickClient()
 es_client.connect()
         
 NSEC_IN_SEC = 10 ** 9
+COUNT = 10
 
 class Crawler:
     def __init__(self, root_url, max_rps, workers_count):
@@ -48,23 +51,24 @@ class Crawler:
     # TODO FIX
     async def check_rps_block(self):
 
-        # count = len(self.time_deque)
+        count = len(self.time_deque)
 
-        # if count < self.max_rps:
-        #     self.time_deque.append(time.time_ns())
+        if count < self.max_rps:
+            self.time_deque.append(time.time_ns())
 
-        #     return True
+            return True
 
-        # # TODO current time not last time
-        # delta = self.time_deque[0] - self.time_deque[count - 1]
-        # if delta < NSEC_IN_SEC:
-        #     if count == self.max_rps:
-        #         self.time_deque.popleft()
-        #     self.time_deque.append(time.time_ns())
+        now = time.time_ns()
+        delta = self.time_deque[0] - now
+        assert delta < 0
+        if delta < NSEC_IN_SEC:
+            if count == self.max_rps:
+                self.time_deque.popleft()
+            self.time_deque.append(now)
 
-        #     return True
-        # else:
-        #     False
+            return True
+        else:
+            False
 
         return True
 
@@ -80,6 +84,8 @@ class Crawler:
         self.rabbit_connection = await aio_pika.connect(
         "amqp://guest:guest@127.0.0.1/")
         self.rabbit_chanel = await self.rabbit_connection.channel()
+
+        init_mongodb(dbname=DBNAME)
 
         self.rabbit_q = await self.rabbit_chanel.declare_queue(
              self.rabbit_q_name, auto_delete=True)
@@ -162,8 +168,7 @@ class Crawler:
     
 
     async def do_job(self, idx):
-        # TODO rm cranche
-        count = 100
+        # global COUNT 
 
         async for message in self.rabbit_q:
             async with message.process():
@@ -173,14 +178,12 @@ class Crawler:
                 if url not in self.visited_urls:
                     self.visited_urls.add(url)
 
-                    # TODO rm cranche
-                    count -= 1
-                    if count == 0:
-                        return 
+                    # COUNT -= 1
+                    # if COUNT == 0:
+                    #     return 
 
-                    soup = 0
+                    # soup = 0
 
-                    # place for limit
                     while not await self.check_rps_block():
                         await asyncio.sleep()
 

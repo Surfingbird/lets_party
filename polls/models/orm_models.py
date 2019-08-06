@@ -28,9 +28,6 @@ class Profile(Model):
     _id = StringField(required=False, default='')
 
     vk_id = IntField(required=True, default=None)
-    first_name = StringField(required=True, default=None)
-    last_name = StringField(required=True, default=None)
-    photo_url = StringField(required=False, default='')
     wishes = WishListField()
     intentions = IntentionListField()
 

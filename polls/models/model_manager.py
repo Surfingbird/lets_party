@@ -1,33 +1,13 @@
 import asyncio
 
+<<<<<<< HEAD
 from polls.models.db import db
+=======
+from polls.models.db import db, get_mongo_conn
+>>>>>>> develop
 
 from bson.objectid import ObjectId
 from polls.models.orm_models import Product, Profile
-
-
-def create_product_dict(product_name, discription, price, img_url, product_url):
-    document = {}
-
-    if discription: 
-        document = {
-            'product_name': product_name,
-            'discription': discription,
-            'price': price,
-            'img_url': img_url,
-            'product_url': product_url
-        }
-    else :
-        document = {
-            'product_name': product_name,
-            'price': price,
-            'img_url': img_url,
-            'product_url': product_url
-        }
-    
-    if api.product_t.check(document):
-        return document
-
 
 PRODUCTS_ON_PAGE = 10
 
@@ -35,7 +15,11 @@ PRODUCTS_ON_PAGE = 10
 class ModelManager:
     async def create_product(self, product):
         document = product.to_dict()
-        res = await db.product_collection.insert_one(document)
+        db = get_mongo_conn()
+
+        collection = Product.Meta.collection_name
+
+        res = await db[collection].insert_one(document)
 
         return str(res.inserted_id)
 
@@ -49,34 +33,28 @@ class ModelManager:
 
         url = db.main_url + str(last_id) + "?pretty"
 
-        async with db.es_session.put(url, json=(data)) as resp:
-            #  print(await resp.text())
+        async with db.es_session.put(url, json=(data)):
             pass
 
-
-    async def get_products(self):
-        return await db.product_collection.find().limit(PRODUCTS_ON_PAGE).to_list(length=PRODUCTS_ON_PAGE)
-
-
-    # TODO написать тест
+# TODO FIX BUG
     async def check_wish(self, uid, pid):
-        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid), 'wishes' : {'p_id' : ObjectId(pid)}})
+        db = get_mongo_conn()
+
+        collection = Profile.Meta.collection_name
+
+        res = await db[collection].find_one({'_id' : ObjectId(uid), 'wishes' : {'p_id' : ObjectId(pid)}})
         if res is None:
             return False
         else:
             return True
 
-    
-    async def get_profile(self, uid):
-        return await db.profiles_collection.find_one({'_id' : ObjectId(uid)})
-
-
-    async def get_product(self, pid):
-        return await db.product_collection.find_one({'_id' : ObjectId(pid)})
-
 
     async def check_user(self, uid):
-        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid)})
+        db = get_mongo_conn()
+
+        collection = Profile.Meta.collection_name
+
+        res = await db[collection].find_one({'_id' : ObjectId(uid)})
         if res is None:
             return False
         else:
@@ -85,7 +63,11 @@ class ModelManager:
 
     # TODO написать тест
     async def check_intention(self, uid, pid, dest_id):
-        res = await db.profiles_collection.find_one({'_id' : ObjectId(uid), 'intentions' : {'product_id' : pid, 'dest_id' : dest_id}})
+        db = get_mongo_conn()
+
+        collection = Profile.Meta.collection_name
+
+        res = await db[collection].find_one({'_id' : ObjectId(uid), 'intentions' : {'product_id' : pid, 'dest_id' : dest_id}})
         if res is None:
             return False
         else:
@@ -93,7 +75,11 @@ class ModelManager:
 
 
     async def check_product(self, pid):
-        res = await db.product_collection.find_one({'_id' : ObjectId(pid)})
+        db = get_mongo_conn()
+
+        collection = Product.Meta.collection_name  
+
+        res = await db[collection].find_one({'_id' : ObjectId(pid)})
         if res is None:
             return False
         else:
@@ -101,7 +87,11 @@ class ModelManager:
 
 
     async def del_profile(self, uid):
-        res = await db.profiles_collection.delete_one({'_id' : ObjectId(uid)})
+        db = get_mongo_conn()
+
+        collection = Profile.Meta.collection_name  
+
+        res = await db[collection].delete_one({'_id' : ObjectId(uid)})
         if res is None:
             return False
         else:
@@ -109,7 +99,11 @@ class ModelManager:
     
 
     async def del_product(self, pid):
-        res = await db.product_collection.delete_one({'_id' : ObjectId(pid)})
+        db = get_mongo_conn()
+
+        collection = Product.Meta.collection_name  
+        
+        res = await db[collection].delete_one({'_id' : ObjectId(pid)})
         if res is None:
             return False
         else:
@@ -129,6 +123,8 @@ class ModelManager:
         collection = Profile.Meta.collection_name
 
         selector, update = add_users_wish_query(uid, pid)
+        db = get_mongo_conn()
+
         res = await db[collection].update_one(selector, update)
         if res is None:
             return False
@@ -150,6 +146,7 @@ class ModelManager:
         #     async with s.start_transaction():
         s = None
         collection = Profile.Meta.collection_name
+        db = get_mongo_conn()
 
         selector, update = del_users_wish_query(uid, pid)
         res = await db[collection].update_one(selector, update, session=s)
@@ -186,7 +183,7 @@ class ModelManager:
         return extended_wishes
 
 
-    # OK
+    # TODO FIX CRUNCH WITH ID
     async def get_users_intentions(self, uid):
         res = await Profile.objects.get(_id=uid)
         if res is None:
@@ -199,6 +196,11 @@ class ModelManager:
             product = await Product.objects.get(_id=product_id)
             if product is not None:
                 extended =  {**intention, **product}
+                dest_id = extended['dest_id']
+                prof = await Profile.objects.get(_id=dest_id)
+
+                extended['dest_id'] = prof['vk_id']
+                
                 extended_intentions.append(extended)
 
         return extended_intentions
@@ -229,6 +231,7 @@ class ModelManager:
     async def add_users_intention(self, uid, pid, dest_id):
         res = await self.check_user(uid)
         if res is None:
+
             return False
 
         res = await self.check_user(dest_id)
@@ -246,6 +249,8 @@ class ModelManager:
         collection = Profile.Meta.collection_name
 
         selector, update = add_users_intention_query(uid, pid, dest_id)
+        db = get_mongo_conn()
+
         res = await db[collection].update_one(selector, update, session=s)
         if res is None:
             # await s.abort_transaction()
@@ -253,6 +258,8 @@ class ModelManager:
             return False
 
         selector, update = reserve_users_wish_query(uid, pid, dest_id)
+        db = get_mongo_conn()
+
         res = await db[collection].update_one(selector, update, session=s)
         if res is None:
             # await s.abort_transaction()
@@ -282,6 +289,8 @@ class ModelManager:
         collection = Profile.Meta.collection_name
 
         condition, update = close_res_users_wish_query(uid, pid, dest_id)
+        db = get_mongo_conn()
+
         res = await db[collection].update_one(condition, update, session=s)
         if res is None:
             # await s.abort_transaction()
@@ -314,10 +323,8 @@ def del_users_intention_query_wo_sponsor(uid, pid):
 def del_users_wish_query(uid, pid):
     return {'_id' : ObjectId(uid)}, {'$pull' : {'wishes' : {'product_id' : pid}}}
 
-
 def reserve_users_wish_query(uid, pid, dest_id):
     return {'_id': ObjectId(dest_id), 'wishes.product_id' : pid}, {'$set' : {'wishes.$.reserved' : True, 'wishes.$.sponsor_id' : uid}}
 
-# TODO описать логику проверки поля reserved, чтобы не перезаписывать спонсора
 def close_res_users_wish_query(uid, pid, dest_id):
     return {'_id': ObjectId(dest_id), 'wishes.product_id' : pid}, {'$set' : {'wishes.$.reserved' : False}}
