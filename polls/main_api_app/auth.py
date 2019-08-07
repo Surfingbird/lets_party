@@ -24,7 +24,7 @@ def gen_token(payload):
 async def check_token_middleware(request, handler):
     url = str(request.rel_url)
 
-    if url == login_url and request.method == "POST":
+    if (url == login_url and request.method == "POST") or url == '/metrics':
         pass
 
     elif COOKIE_NAME in request.cookies:

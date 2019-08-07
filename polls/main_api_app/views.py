@@ -1,4 +1,6 @@
 import bson
+import prometheus_client
+
 from aiohttp import web
 from polls.main_api_app import auth
 import aiohttp
@@ -20,6 +22,14 @@ def init_es_connect(loop=None, path=ES_PATH):
 
     es_client = ElastickClient(loop, path)
     es_client.connect()
+
+    
+async def metrics(request):
+    body = prometheus_client.generate_latest()
+    resp = web.Response(body=body)
+    resp.content_type = prometheus_client.CONTENT_TYPE_LATEST
+
+    return resp
 
 
 async def login(request):

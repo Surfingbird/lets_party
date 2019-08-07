@@ -2,6 +2,8 @@ from polls.main_api_app import views
 from aiohttp import web
 
 def setup_routes(app):
+    app.router.add_get('/metrics', views.metrics)
+
     app.router.add_post('/auth', views.login)
     app.router.add_delete('/auth', views.logout)
     
