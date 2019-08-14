@@ -1,13 +1,46 @@
 import motor.motor_asyncio
 import asyncio
 import aiohttp
+import os
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
+MONGO_HOST = 'MONGO_HOST'
+MONGO_PORT = 'MONGO_PORT'
+MONGO_DBNAME = 'MONGO_DBNAME'
+
+LOCALHOST = 'localhost'
+DEFAULT_MONGO_PORT = 27017
+DEFAULT_DBNAME = 'kts'
+
+def get_mongo_host():
+    if MONGO_HOST in os.environ:
+        host = os.environ.get(MONGO_HOST)
+
+        return host
+    else:
+        return LOCALHOST
+
+def get_mongo_port():
+    if MONGO_PORT in os.environ:
+        port = int(os.environ.get(MONGO_PORT))
+
+        return port
+    else:
+        return DEFAULT_MONGO_PORT
+
+def get_mongo_dbname():
+    if MONGO_DBNAME in os.environ:
+        dbname = os.environ.get(MONGO_DBNAME)
+
+        return dbname
+    else:
+        return DEFAULT_DBNAME
+
 # MongoDB
-HOST: str = 'localhost'
-PORT: int  = 27017
-DBNAME: str = 'kts'
+HOST: str = get_mongo_host()
+PORT: int  = get_mongo_port()
+DBNAME: str = get_mongo_dbname()
 
 client: AsyncIOMotorClient = None
 db: AsyncIOMotorDatabase = None

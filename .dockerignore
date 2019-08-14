@@ -1,0 +1,9 @@
+**\..*
+README.md
+swagger.yaml
+venv
+py37-venv
+presentation.pdf 
+lets_party.egg-info
+**\__pycache__
+tests
