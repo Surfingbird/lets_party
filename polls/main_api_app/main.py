@@ -4,7 +4,7 @@ import prometheus_client
 from aiohttp import web
 from polls.main_api_app.routes import setup_routes
 from polls.main_api_app import auth
-from polls.models.db import init_mongodb, DBNAME
+from polls.models.db import init_mongodb, DBNAME, HOST, PORT
 from polls.main_api_app.views import init_es_connect
 from polls.main_api_app.settings import ES_PATH
 
